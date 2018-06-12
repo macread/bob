@@ -1,0 +1,3 @@
+SELECT * 
+FROM USERS
+WHERE auth_id = $1;
