@@ -10,7 +10,8 @@ const express = require('express')
     , session = require('express-session') 
     , passport = require('passport') 
     , Auth0Strategy = require('passport-auth0')
-    , massive = require('massive'); 
+    , massive = require('massive')
+    , controller = require('./controller');
 
 //deconstruct the data from the .env file
 const {
@@ -65,9 +66,7 @@ passport.use(
                     //create a new user
                     db.create_user([displayName, picture, id]).then( (createdUser) => {
                         done(null, createdUser[0].id) //save the new id
-                    }
-
-                    )
+                    })
                 }
             })
         }
@@ -77,14 +76,14 @@ passport.use(
 //serialize and deserialize sets up sessions
 // serializeUser gets called on log in and decides what is stored in 
 // in session
-passport.serializeUser((primaryKeyID, done) => {
-    done(null,primaryKeyID)
+passport.serializeUser((id, done) => {
+    done(null,id)
 })
 
 // deserizeUser runs everytime fetches what is stored in sessions
 // and puts it in req.user
-passport.deserializeUser((primaryKeyID, done) => {
-    app.get('db').find_session_user([primaryKeyID]).then( user => {
+passport.deserializeUser((id, done) => {
+    app.get('db').find_session_user([id]).then( user => {
         done(null, user[0])
     })
 })
@@ -93,8 +92,9 @@ passport.deserializeUser((primaryKeyID, done) => {
 //setup authorization endpoints
 app.get('/auth', passport.authenticate('auth0'));
 app.get('/auth/callback', passport.authenticate('auth0', {
-    successRedirect: 'http://localhost:3000/#/private' // change to 3005 to build
+    successRedirect: 'http://localhost:3000/#/dashboard' // change to 3005 to build
 }))
+
 app.get('/auth/logout', (req, res) => {
     req.logOut();
     res.redirect('http://localhost:3000'); // change to 3005 to build
@@ -108,6 +108,8 @@ app.get('/auth/user/', (req, res) => {
         res.status(401).send('Nice try')
     }
 })
+
+app.get('/api/user', controller.getUser);
 
 //server
 //get that server going 

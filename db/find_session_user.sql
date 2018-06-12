@@ -1,0 +1,3 @@
+SELECT * 
+FROM USERS
+WHERE id = $1;
