@@ -53,7 +53,7 @@ class Dashboard extends Component {
             <div className='Dashboard'>
                 <img src={this.props.avatar} alt=""/>
                 <p>{this.props.username}</p>  
-                {this.props.email ? null : <Settings /> } 
+                { (!this.props.email || this.props.settingsEditing) ? <Settings /> : null } 
             </div> 
         )
     }
@@ -64,7 +64,8 @@ function MapStateToProps(state){
         userid: state.userid,
         username: state.username,
         avatar: state.avatar,
-        email: state.email
+        email: state.email,
+        settingsEditing: state.settingsEditing
     });
 }
 export default connect(MapStateToProps, { updateUserSettings })(Dashboard);

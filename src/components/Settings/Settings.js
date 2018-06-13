@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
-import { updateEmail, increment, decrement } from '../../ducks/reducer';
+import { updateEmail, increment, decrement, settingsDoneEditing } from '../../ducks/reducer';
 
 
 class Settings extends Component {
@@ -21,7 +21,8 @@ class Settings extends Component {
             resources: resources,
             contacts: contacts,
             meetings: meetings
-        })
+        });
+        this.props.settingsDoneEditing();
     }
 
     updateEmail(val){
@@ -81,4 +82,4 @@ function MapStateToProps(state){
     }
 }
 
-export default connect(MapStateToProps, { updateEmail, increment, decrement })(Settings)
+export default connect(MapStateToProps, { updateEmail, increment, decrement, settingsDoneEditing })(Settings)

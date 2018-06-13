@@ -5,13 +5,15 @@ const initialState = {
     email: '',
     resources: 0,
     contacts: 0,
-    meetings: 0
+    meetings: 0,
+    settingsEditing: false
 }
 
 const UPDATE_USER_SETTNGS = 'UPDATE_USER_SETTNGS';
 const UPDATE_EMAIL = 'UPDATE_EMAIL';
 const INCREMENT = 'INCREMENT';
 const DECREMENT = 'DECREMENT';
+const SETTINGS_DONE_EDITING = 'SETTINGS_DONE_EDITING';
 
 export default function reducer(state = initialState, action ) {
 
@@ -21,7 +23,7 @@ export default function reducer(state = initialState, action ) {
             return Object.assign({}, state, action.payload)
 
         case UPDATE_EMAIL:
-            return Object.assign({}, state, { email: action.payload })
+            return Object.assign({}, state, { email: action.payload, settingsEditing: true })
 
         case INCREMENT:
             switch (action.payload){
@@ -48,6 +50,9 @@ export default function reducer(state = initialState, action ) {
                     break;
             }
             break;
+
+        case SETTINGS_DONE_EDITING:
+            return Object.assign({}, state, {settingsEditing: false});
 
         default:
         return state;
@@ -80,5 +85,11 @@ export function decrement(goalType){
     return {
         type: DECREMENT,
         payload: goalType
+    }
+}
+
+export function settingsDoneEditing(){
+    return {
+        type: SETTINGS_DONE_EDITING
     }
 }
