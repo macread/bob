@@ -1,4 +1,5 @@
 const initialState = {
+    userid: 0,
     avatar: '',
     username: '',
     email: '',
@@ -23,9 +24,9 @@ export default function reducer(state = initialState, action ) {
 
 }
 
-export function updateUserSettings(avatar, username, email, resources, contacts, meetings){
+export function updateUserSettings(userid, avatar, username, email, resources, contacts, meetings){
     return {
         type: UPDATE_USER_SETTNGS,
-        payload: { avatar: avatar, username: username, email: email, resources: resources, contacts: contacts, meetings: meetings }
+        payload: { userid: userid, avatar: avatar, username: username, email: email, resources: resources, contacts: contacts, meetings: meetings }
     }
 }

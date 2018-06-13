@@ -42,6 +42,10 @@ class Settings extends Component {
         });
     }
 
+    updateEmail(val){
+        this.setState({ email: val })
+    }
+
     increment(type){
         switch (type){
             case 'resource':
@@ -77,7 +81,7 @@ class Settings extends Component {
     render() {
         return (
             <div>
-                Email<input type='' className=''/>
+                Email<input type='' className='' onChange={ ( e ) => this.updateEmail( e.target.value ) }/>
                 <hr />
                 Goals
                 <div className='settings-resources'>

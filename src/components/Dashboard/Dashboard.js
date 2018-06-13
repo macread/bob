@@ -10,25 +10,33 @@ class Dashboard extends Component {
     constructor() {
         super()
             this.state = {
+                userid: 0,
                 avatar: '',
-                username: ''
+                username: '',
+                email: ''
             }
     }
 
     componentDidMount() {
-        this.getUserData();
+        if (this.state.userid === 0){
+            this.getUserData();
+        }
+        
     }
 
     getUserData() {
         axios.get('/api/user/').then( results => {
-            let { avatar, username, email, resources, contacts, meetings } = results.data[0];
+            let { id, avatar, username, email, resources, contacts, meetings } = results.data[0];
 
             this.setState({ 
+                userid: id,
                 avatar: avatar,
-                username: username
+                username: username,
+                email: email
             });
             
             this.props.updateUserSettings({
+                id,
                 avatar,
                 username,
                 email,
@@ -53,8 +61,10 @@ class Dashboard extends Component {
 
 function MapStateToProps(state){
     return({
+        userid: state.userid,
         username: state.username,
-        avatar: state.avatar
+        avatar: state.avatar,
+        email: state.email
     });
 }
 export default connect(MapStateToProps, { updateUserSettings })(Dashboard);

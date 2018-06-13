@@ -1,10 +1,10 @@
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
     auth_id TEXT,
-    avatarURL TEXT,
+    avatar TEXT,
     username TEXT,
     email TEXT,
-    resourceGoal INTEGER,
-    contactGoal INTEGER,
-    factToFaceGoal INTEGER
+    resouces INTEGER,
+    contacts INTEGER,
+    meetings INTEGER
 )

@@ -1,5 +1,5 @@
 INSERT INTO users
-(username, avatarURL, auth_id)
+(username, avatar, auth_id)
 VALUES
 ($1, $2, $3) 
 RETURNING *;
