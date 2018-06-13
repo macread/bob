@@ -36,7 +36,7 @@ class Dashboard extends Component {
             });
             
             this.props.updateUserSettings({
-                id,
+                userid: id,
                 avatar,
                 username,
                 email,
@@ -51,15 +51,16 @@ class Dashboard extends Component {
     render() {
         return (
             <div className='Dashboard'>
-                <img src={this.state.avatar} alt=""/>
-                <p>{this.state.username}</p>  
-                {this.state.email ? null : <Settings /> } 
+                <img src={this.props.avatar} alt=""/>
+                <p>{this.props.username}</p>  
+                {this.props.email ? null : <Settings /> } 
             </div> 
         )
     }
 }
 
 function MapStateToProps(state){
+    console.log('state in dashboard', state)
     return({
         userid: state.userid,
         username: state.username,

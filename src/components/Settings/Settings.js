@@ -9,21 +9,14 @@ class Settings extends Component {
     super()
         
         this.state = {
-            avatar: '',
-            username: '',
-            email: '',
-            resources: 0,
-            contacts: 0,
-            meetings: 0,
             edit: false
         }
 
-        this.increment = this.increment.bind(this);
     }
 
  
     updateUserSettings(){
-        let { avatar, username, email, resources, contacts, meetings } = this.state;
+        let { userid, avatar, username, email, resources, contacts, meetings } = this.state;
 
         axios.post('/api/user',
         {email: email,
@@ -33,6 +26,7 @@ class Settings extends Component {
         })
 
         this.props.updateUserSettings({
+            userid,
             avatar,
             username,
             email,
@@ -113,6 +107,7 @@ class Settings extends Component {
 
 function MapStateToProps(state){
     return {
+        userid: state.userid,
         avatar: state.avatar,
         username: state.username,
         email: state.email,
