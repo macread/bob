@@ -1,0 +1,1 @@
+UPDATE users SET email = $1, resources = $2, contacts = $3, meetings = $4 WHERE id = $5

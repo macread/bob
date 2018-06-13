@@ -110,6 +110,7 @@ app.get('/auth/user/', (req, res) => {
 })
 
 app.get('/api/user', controller.getUser);
+app.post('/api/user',controller.updateUser);
 
 //server
 //get that server going 
