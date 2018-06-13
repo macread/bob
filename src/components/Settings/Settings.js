@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
-import { updateUserSettings } from '../../ducks/reducer';
+import { updateEmail, increment, decrement } from '../../ducks/reducer';
 
 
 class Settings extends Component {
@@ -13,85 +13,49 @@ class Settings extends Component {
         }
 
     }
-
  
     updateUserSettings(){
-        let { userid, avatar, username, email, resources, contacts, meetings } = this.state;
-
+        let {  email, resources, contacts, meetings } = this.props;
         axios.post('/api/user',
         {email: email,
-        resources: resources,
-        contacts: contacts,
-        meetings: meetings
+            resources: resources,
+            contacts: contacts,
+            meetings: meetings
         })
-
-        this.props.updateUserSettings({
-            userid,
-            avatar,
-            username,
-            email,
-            resources,
-            contacts,
-            meetings
-        });
     }
 
     updateEmail(val){
-        this.setState({ email: val })
+        this.props.updateEmail(val)
     }
 
     increment(type){
-        switch (type){
-            case 'resource':
-                this.setState({ resources: this.state.resources + 1 })
-                break;
-            case 'contact':
-                this.setState({ contacts: this.state.contacts + 1 })
-                break;
-            case 'meeting':
-                this.setState({ meetings: this.state.meetings + 1 })
-                break;
-            default:
-                break;
-        }
+       this.props.increment(type)
     }
 
     decrement(type){
-        switch (type){
-            case 'resource':
-                this.setState({ resources: this.state.resources - 1 })
-                break;
-            case 'contact':
-                this.setState({ contacts: this.state.contacts - 1 })
-                break;
-            case 'meeting':
-                this.setState({ meetings: this.state.meetings - 1 })
-                break;
-            default:
-                break;
-        }
+        this.props.decrement(type)
     }
 
     render() {
         return (
             <div>
-                Email<input type='' className='' onChange={ ( e ) => this.updateEmail( e.target.value ) }/>
+                Email<input value={this.props.email} type='' className='' onChange={ ( e ) => this.updateEmail( e.target.value ) }/>
                 <hr />
                 Goals
                 <div className='settings-resources'>
-                    {this.state.resources}
+                    {this.props.resources}
                     <button name='incResources' type='' className='' onClick={() => this.increment('resource')}>+</button>
                     <button type='decResources' className='' onClick={() => this.decrement('resource')}>-</button>
                     Resources
                 </div>
                 <div className='settings-contacts'>
-                    {this.state.contacts}
+                    {this.props.contacts}
                     <button type='' className='' onClick={() => this.increment('contact')}>+</button>
                     <button type='' className='' onClick={() => this.decrement('contact')}>-</button>
                     Contacts
                 </div>
                 <div className='setting-meetings'>
-                    {this.state.meetings}
+                    {this.props.meetings}
                     <button type='' className='' onClick={() => this.increment('meeting')}>+</button>
                     <button type='' className='' onClick={() => this.decrement('meeting')}>-</button>
                     Meetings
@@ -117,4 +81,4 @@ function MapStateToProps(state){
     }
 }
 
-export default connect(MapStateToProps, { updateUserSettings })(Settings)
+export default connect(MapStateToProps, { updateEmail, increment, decrement })(Settings)

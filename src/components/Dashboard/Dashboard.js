@@ -60,7 +60,6 @@ class Dashboard extends Component {
 }
 
 function MapStateToProps(state){
-    console.log('state in dashboard', state)
     return({
         userid: state.userid,
         username: state.username,
