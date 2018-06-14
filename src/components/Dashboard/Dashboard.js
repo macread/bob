@@ -3,6 +3,7 @@ import axios from 'axios';
 import Settings from '../Settings/Settings';
 import { connect } from 'react-redux';
 import { updateUserSettings } from '../../ducks/reducer';
+import NavBar from './../NavBar/NavBar';
 
 
 class Dashboard extends Component {
@@ -51,6 +52,7 @@ class Dashboard extends Component {
     render() {
         return (
             <div className='Dashboard'>
+                <NavBar userid = {this.props.userid}/>
                 <img src={this.props.avatar} alt=""/>
                 <p>{this.props.username}</p>  
                 { (!this.props.email || this.props.settingsEditing) ? <Settings /> : null } 

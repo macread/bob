@@ -97,7 +97,7 @@ app.get('/auth/callback', passport.authenticate('auth0', {
     successRedirect: 'http://localhost:3000/#/dashboard' // change to 3005 to build
 }))
 
-app.get('/auth/logout', (req, res) => {
+app.get('/api/logout', (req, res) => {
     req.logOut();
     res.redirect('http://localhost:3000'); // change to 3005 to build
 })

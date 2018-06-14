@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
+import NavBar from './../NavBar/NavBar';
 import { updateEmail, increment, decrement, settingsDoneEditing } from '../../ducks/reducer';
 
 
@@ -40,6 +41,7 @@ class Settings extends Component {
     render() {
         return (
             <div>
+                <NavBar />
                 Email<input value={this.props.email} type='' className='' onChange={ ( e ) => this.updateEmail( e.target.value ) }/>
                 <hr />
                 Goals
