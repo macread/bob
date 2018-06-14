@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 
 import PropTypes from 'prop-types';
@@ -43,8 +44,11 @@ class MenuAppBar extends React.Component {
     this.setState({ anchorEl: event.currentTarget });
   };
 
-  handleClose = () => {
-    // this.setState({ anchorEl: null });
+  handleSettings = () => {
+    this.props.history.push('/settings')
+  };
+
+  handleLogout = () => {
     axios.get('/api/logout').then(this.props.history.push('/'))
   };
 
@@ -57,11 +61,13 @@ class MenuAppBar extends React.Component {
       <div className={classes.root}>
         <AppBar position="static">
           <Toolbar>
+            
             <IconButton className={classes.menuButton} color="inherit" aria-label="Menu">
               <MenuIcon />
             </IconButton>
+ 
             <Typography variant="title" color="inherit" className={classes.flex}>
-              Title
+              {process.env.REACT_APP_NAME}
             </Typography>
             {this.props.userid ?  (
               <div>
@@ -87,10 +93,8 @@ class MenuAppBar extends React.Component {
                   open={open}
                   onClose={this.handleClose}
                 >
-                  <MenuItem onClick={this.handleClose}>Settings</MenuItem>
-                  {/* <a href="http://localhost:3005/auth/logout"> */}
-                    <MenuItem onClick={this.handleClose}>Logout</MenuItem>
-                  {/* </a> */}
+                  <Link to={'/settings'} ><MenuItem onClick={this.handleClose}>Settings</MenuItem></Link>
+                  <MenuItem onClick={this.handleLogout}>Logout</MenuItem>
                 </Menu>
               </div>
             )

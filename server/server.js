@@ -114,6 +114,8 @@ app.get('/auth/user/', (req, res) => {
 app.get('/api/user', controller.getUser);
 app.post('/api/user',controller.updateUser);
 
+app.get('/api/resources', controller.getResources);
+
 //server
 //get that server going 
 app.listen(SERVER_PORT, () => {

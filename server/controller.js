@@ -16,4 +16,12 @@ module.exports = {
             .catch( (err)=> res.status(500).send() );
     },
 
+    getResources: (req, res, next) => {
+        const connection = req.app.get('db');
+        connection.get_resources(req.user.id)
+            .then ( (resources) => {
+                res.status(200).send(resources)} )
+            .catch ( (err) => res.status(500).send())
+    },
+
 }

@@ -4,6 +4,7 @@ import Settings from '../Settings/Settings';
 import { connect } from 'react-redux';
 import { updateUserSettings } from '../../ducks/reducer';
 import NavBar from './../NavBar/NavBar';
+import Resources from './../Resources/Resources';
 
 
 class Dashboard extends Component {
@@ -14,7 +15,8 @@ class Dashboard extends Component {
                 userid: 0,
                 avatar: '',
                 username: '',
-                email: ''
+                email: '',
+                resourceData: []
             }
     }
 
@@ -47,6 +49,12 @@ class Dashboard extends Component {
             });
         });
 
+        axios.get('/api/resources').then( results => {
+            this.setState({
+                resourceData: results.data
+            })
+        })
+
     }
 
     render() {
@@ -56,6 +64,7 @@ class Dashboard extends Component {
                 <img src={this.props.avatar} alt=""/>
                 <p>{this.props.username}</p>  
                 { (!this.props.email || this.props.settingsEditing) ? <Settings /> : null } 
+                <Resources resourceData={this.state.resourceData}/>
             </div> 
         )
     }
