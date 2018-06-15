@@ -6,7 +6,8 @@ const initialState = {
     resources: 0,
     contacts: 0,
     meetings: 0,
-    settingsEditing: false
+    settingsEditing: false,
+    resourceList: []
 }
 
 const UPDATE_USER_SETTNGS = 'UPDATE_USER_SETTNGS';
@@ -14,6 +15,8 @@ const UPDATE_EMAIL = 'UPDATE_EMAIL';
 const INCREMENT = 'INCREMENT';
 const DECREMENT = 'DECREMENT';
 const SETTINGS_DONE_EDITING = 'SETTINGS_DONE_EDITING';
+const PREP_RESOURCES = 'PREP_RESOURCES';
+const UPDATE_COLLAPSE_STATE= 'UPDATE_COLLAPSE_STATE';
 
 export default function reducer(state = initialState, action ) {
 
@@ -54,6 +57,33 @@ export default function reducer(state = initialState, action ) {
         case SETTINGS_DONE_EDITING:
             return Object.assign({}, state, {settingsEditing: false});
 
+        case PREP_RESOURCES:
+            let { resourceList } = action.payload
+            let oldId = -1;
+            let arr = [];
+            for (let i=0; i < resourceList.length; i++){
+                arr.push(resourceList[i])
+                if (oldId !== resourceList[i].id){
+                    arr[arr.length-1] = Object.assign(arr[arr.length-1],{main: 'yes', collapse: false})
+                }else{
+                    arr[arr.length-1] = Object.assign(arr[arr.length-1],{main: 'no', collapse: false})
+                }
+                oldId = resourceList[i].id
+
+            }
+            return Object.assign({}, state, {resourceList: arr})
+
+        case UPDATE_COLLAPSE_STATE:
+            let resourceId = action.payload;
+            let newResourceList = [...state.resourceList];
+
+            newResourceList.forEach( resource => {
+                resource.id === resourceId ? resource.collapse = !resource.collapse : null
+            })
+
+            return Object.assign({}, state, {resourceList: newResourceList})
+
+
         default:
         return state;
     }
@@ -91,5 +121,19 @@ export function decrement(goalType){
 export function settingsDoneEditing(){
     return {
         type: SETTINGS_DONE_EDITING
+    }
+}
+
+export function prepResources(resourceList){
+    return {
+        type: PREP_RESOURCES,
+        payload: {resourceList: resourceList}
+    }
+}
+
+export function updateCollapseState (resourceId){
+    return {
+        type: UPDATE_COLLAPSE_STATE,
+        payload: resourceId
     }
 }

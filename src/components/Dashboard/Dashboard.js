@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import Settings from '../Settings/Settings';
 import { connect } from 'react-redux';
-import { updateUserSettings } from '../../ducks/reducer';
+import { updateUserSettings, prepResources } from '../../ducks/reducer';
 import NavBar from './../NavBar/NavBar';
 import Resources from './../Resources/Resources';
 
@@ -50,9 +50,7 @@ class Dashboard extends Component {
         });
 
         axios.get('/api/resources').then( results => {
-            this.setState({
-                resourceData: results.data
-            })
+           this.props.prepResources(results.data)
         })
 
     }
@@ -79,4 +77,4 @@ function MapStateToProps(state){
         settingsEditing: state.settingsEditing
     });
 }
-export default connect(MapStateToProps, { updateUserSettings })(Dashboard);
+export default connect(MapStateToProps, { updateUserSettings, prepResources })(Dashboard);
