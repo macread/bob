@@ -78,7 +78,9 @@ export default function reducer(state = initialState, action ) {
             let newResourceList = [...state.resourceList];
 
             newResourceList.forEach( resource => {
-                resource.id === resourceId ? resource.collapse = !resource.collapse : null
+                if (resource.id === resourceId){
+                    resource.collapse = !resource.collapse
+                }
             })
 
             return Object.assign({}, state, {resourceList: newResourceList})

@@ -68,11 +68,11 @@ class NestedList extends React.Component {
                     ( 
                     <div key={i}>
                         <Collapse in={resource.collapse} timeout="auto" unmountOnExit>
-                        <List component="div" disablePadding>
-                        <ListItem button className={classes.nested}>
-                            <ListItemText inset primary={resource.contacttitle} />
-                        </ListItem>
-                        </List>
+                            <List component="div" disablePadding>
+                                <ListItem button className={classes.nested}>
+                                    <ListItemText inset primary={resource.contacttitle} />
+                                </ListItem>
+                            </List>
                         </Collapse>
                     </div>
                     )
