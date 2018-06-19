@@ -24,4 +24,14 @@ module.exports = {
             .catch ( (err) => res.status(500).send())
     },
 
+
+    updateResource: (req, res, next) => {
+        const connection = req.app.get('db');
+        const { id, date, type, title, url, description} = req.body;
+        connection.update_resource([date, type, title, url, description, id])
+            .then ( (resources) => {
+                res.status(200).send(resources)} )
+            .catch ( (err) => res.status(500).send())
+    },
+
 }

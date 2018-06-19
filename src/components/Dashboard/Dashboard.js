@@ -58,7 +58,7 @@ class Dashboard extends Component {
     render() {
         return (
             <div className='Dashboard'>
-                <NavBar userid = {this.props.userid}/>
+                <NavBar />
                 <img src={this.props.avatar} alt=""/>
                 <p>{this.props.username}</p>  
                 { (!this.props.email || this.props.settingsEditing) ? <Settings /> : null } 

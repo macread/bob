@@ -115,6 +115,7 @@ app.get('/api/user', controller.getUser);
 app.post('/api/user',controller.updateUser);
 
 app.get('/api/resources', controller.getResources);
+app.put('/api/resources/:id',controller.updateResource);
 
 //server
 //get that server going 

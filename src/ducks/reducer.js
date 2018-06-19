@@ -7,7 +7,8 @@ const initialState = {
     contacts: 0,
     meetings: 0,
     settingsEditing: false,
-    resourceList: []
+    resourceList: [],
+    resource: {}
 }
 
 const UPDATE_USER_SETTNGS = 'UPDATE_USER_SETTNGS';
@@ -16,7 +17,10 @@ const INCREMENT = 'INCREMENT';
 const DECREMENT = 'DECREMENT';
 const SETTINGS_DONE_EDITING = 'SETTINGS_DONE_EDITING';
 const PREP_RESOURCES = 'PREP_RESOURCES';
-const UPDATE_COLLAPSE_STATE= 'UPDATE_COLLAPSE_STATE';
+const UPDATE_COLLAPSE_STATE = 'UPDATE_COLLAPSE_STATE';
+const GET_RESOURCE = 'GET_RESOURCE';
+const ADD_RESOURCE = 'ADD_RESOURCE';
+const UPDATE_RESOURCE = 'UPDATE_RESOURCE';
 
 export default function reducer(state = initialState, action ) {
 
@@ -86,8 +90,22 @@ export default function reducer(state = initialState, action ) {
             return Object.assign({}, state, {resourceList: newResourceList})
 
 
+        case GET_RESOURCE:
+            
+            let newResource = state.resourceList.filter(resource => resource.id === action.payload)
+            
+            return Object.assign({}, state, {resource: newResource})
+
+        case ADD_RESOURCE:
+            
+            return Object.assign({}, state, {resource: newResource})
+
+        case UPDATE_RESOURCE:
+
+            return Object.assign({}, state, {resource: newResource})
+
         default:
-        return state;
+            return state;
     }
 
 }
@@ -137,5 +155,26 @@ export function updateCollapseState (resourceId){
     return {
         type: UPDATE_COLLAPSE_STATE,
         payload: resourceId
+    }
+}
+
+export function getResource (resourceId) {
+    return {
+        type: GET_RESOURCE,
+        payload: resourceId
+    }
+}
+
+export function addResource (resource) {
+    return {
+        type: ADD_RESOURCE,
+        payload: resource
+    }
+}
+
+export function updateResource (resource) {
+    return {
+        type: UPDATE_RESOURCE,
+        payload: resource
     }
 }

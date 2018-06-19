@@ -2,6 +2,7 @@ SELECT
     resources.id, 
     username, 
     resources.date AS resourcedate,
+    resources.type,
     resources.title AS resourcetitle, 
     url, 
     resources.description, 
