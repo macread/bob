@@ -64,7 +64,7 @@ class ResourceDetail extends Component {
             })
         }else{
             this.setState({
-                date: this.props.resource[0].resourcedate,
+                date: this.props.resource[0].resourcedate.substring(0,10),
                 type: this.props.resource[0].type,
                 title: this.props.resource[0].resourcetitle,
                 url: this.props.resource[0].url,
