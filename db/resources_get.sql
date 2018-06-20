@@ -11,5 +11,5 @@ SELECT
     contacts.description AS contactdescription
 FROM resources
     JOIN users ON resources.userid = users.id
-    JOIN contacts ON contacts.resourceid = resources.id
+    LEFT JOIN contacts ON contacts.resourceid = resources.id
 WHERE users.id =  $1

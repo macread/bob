@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { updateCollapseState, getResource } from '../../ducks/reducer'
+import { updateCollapseState, getResource, creatingResource } from '../../ducks/reducer'
 
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
@@ -9,6 +9,7 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import EditIcon from '@material-ui/icons/Edit';
+import AddIcon from '@material-ui/icons/AddCircleOutline';
 import Collapse from '@material-ui/core/Collapse';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
@@ -46,6 +47,10 @@ class Resources extends Component {
       this.props.getResource(resourceId);
   }
 
+  handleAddResourceClick(bool){
+      this.props.creatingResource(bool);
+  }
+
   render() {
     const { classes } = this.props;
 
@@ -53,7 +58,13 @@ class Resources extends Component {
       <div className={classes.root}>
         <List
           component="nav"
-          subheader={<ListSubheader component="div"></ListSubheader>} >
+          subheader={<ListSubheader component="div">Resources</ListSubheader>} >
+
+            {<Link to={"/resourcedetail"} >
+                <IconButton color="primary" className={classes.button} component="span" onClick={ () => this.handleAddResourceClick(true) }>
+                    <AddIcon />
+                </IconButton>
+            </Link>}
 
           { 
             this.props.resourceList.map( (resource, i) => ( 
@@ -66,6 +77,7 @@ class Resources extends Component {
                                         resourceId = {resource.Id}>
                                     <EditIcon />
                                 </IconButton>
+
                             </Link>
                             <ListItemText inset primary={resource.resourcetitle} />
                             {resource.collapse ? <ExpandLess /> : <ExpandMore/>}
@@ -111,4 +123,4 @@ function mapStateToProps(state){
     }
 }
 
-export default withStyles(styles)(connect(mapStateToProps, { updateCollapseState, getResource })(Resources));
+export default withStyles(styles)(connect(mapStateToProps, { updateCollapseState, getResource, creatingResource })(Resources));

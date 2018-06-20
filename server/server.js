@@ -61,12 +61,12 @@ passport.use(
         (accessToken, refreshToken, extraParams, profile, done) => {
             const db = app.get('db');
             let {id, displayName, picture} = profile;
-            db.find_user([id]).then( user => {
+            db.user_find([id]).then( user => {
                 if ( user[0] ){
                     done(null, user[0].id)  //just want to save the ID to save memory
                 } else {
                     //create a new user
-                    db.create_user([displayName, picture, id]).then( (createdUser) => {
+                    db.user_create([displayName, picture, id]).then( (createdUser) => {
                         done(null, createdUser[0].id) //save the new id
                     })
                 }
@@ -85,7 +85,7 @@ passport.serializeUser((id, done) => {
 // deserizeUser runs everytime fetches what is stored in sessions
 // and puts it in req.user
 passport.deserializeUser((id, done) => {
-    app.get('db').find_session_user([id]).then( user => {
+    app.get('db').user_find_session([id]).then( user => {
         done(null, user[0])
     })
 })
@@ -116,6 +116,8 @@ app.post('/api/user',controller.updateUser);
 
 app.get('/api/resources', controller.getResources);
 app.put('/api/resources/:id',controller.updateResource);
+app.post('/api/resources',controller.addResource);
+app.delete('/api/resources/:id',controller.deleteResource);
 
 //server
 //get that server going 

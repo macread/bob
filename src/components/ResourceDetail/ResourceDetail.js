@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import NavBar from './../NavBar/NavBar';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import { creatingResource } from '../../ducks/reducer'
 
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
@@ -29,6 +30,7 @@ const styles = theme => ({
   });
 
   const resourceType = [
+    'Select...',
     'indeed.com',
     'Glassdoor',
     'ZipRecruiter',
@@ -42,7 +44,7 @@ class ResourceDetail extends Component {
         super()
         
         this.state = {
-            date: '',
+            date: new Date(),
             type: '',
             title: '',
             url: '',
@@ -51,13 +53,24 @@ class ResourceDetail extends Component {
     }
 
     componentDidMount() {
-        this.setState({
-            date: this.props.resource[0].resourcedate,
-            type: this.props.resource[0].type,
-            title: this.props.resource[0].resourcetitle,
-            url: this.props.resource[0].url,
-            description: this.props.resource[0].description
-        })
+        if (this.props.creatingNewResource) {
+            let today = new Date();
+            this.setState({
+                date: `${today.getFullYear()}-${('00'+(today.getMonth()+1)).slice(-2)}-${today.getDate()}`,
+                type: 'Select...',
+                title: '',
+                url: '',
+                description: ''
+            })
+        }else{
+            this.setState({
+                date: this.props.resource[0].resourcedate,
+                type: this.props.resource[0].type,
+                title: this.props.resource[0].resourcetitle,
+                url: this.props.resource[0].url,
+                description: this.props.resource[0].description
+            })
+        }
     }
 
     handleChange(name, val){
@@ -67,11 +80,18 @@ class ResourceDetail extends Component {
     }
 
     addResource(){
-
+        this.props.creatingResource(false)
+        axios.post('/api/resources/',{
+            date: this.state.date,
+            type: this.state.type,
+            title: this.state.title,
+            url: this.state.url,
+            description: this.state.description
+         })
     }
 
     updateResource(){
-        axios.put(`/api/resources/:${this.props.userid}`,{
+        axios.put(`/api/resources/${this.props.userid}`,{
             id: this.props.resource[0].id,
             date: this.state.date,
             type: this.state.type,
@@ -81,8 +101,12 @@ class ResourceDetail extends Component {
          })
     }
 
-    deleteResource(){
+    cancelResource(){
+        this.props.creatingResource(false)
+    }
 
+    deleteResource(){
+        axios.delete(`/api/resources/${this.props.resource[0].id}`)
     }
 
     render() {
@@ -91,13 +115,19 @@ class ResourceDetail extends Component {
         return (
                 <form className={classes.container} noValidate autoComplete="off">
                 <NavBar />
-                <h1>{this.props.resource[0].resourcetitle}</h1>
+                <h1>{ this.props.creatingNewResource ? 
+                        "New Resource"
+                    :
+                        this.props.resource[0].resourcetitle 
+                }
+                </h1>
 
                     <TextField
                         id="date"
                         label="date"
                         type="date"
                         defaultValue={this.state.date}
+                        value={this.state.date}
                         onChange={( e ) => this.handleChange( 'date', e.target.value ) }
                         className={classes.textField}
                         InputLabelProps={{
@@ -161,30 +191,35 @@ class ResourceDetail extends Component {
                     />
                     
                     { 
-                        this.props.resource[0].id === 0 ?
-                            (<Button variant="contained" color="primary" className={classes.button}
-                                    onClick={()=>this.addResource()}>
-                                Save
-                            </Button>
-                        ) : (
-                            <Button variant="contained" color="primary" className={classes.button}
-                                onClick={()=>this.updateResource()}>
-                                Update
-                            </Button>
-
+                        this.props.newResource ?
+                            (<Link to={'/dashboard'} >
+                                <Button variant="contained" color="primary" className={classes.button}
+                                        onClick={()=>this.addResource()}>
+                                    Save
+                                </Button>
+                            </Link>
+                        ) : (<Link to={'/dashboard'} >
+                                <Button variant="contained" color="primary" className={classes.button}
+                                    onClick={()=>this.updateResource()}>
+                                    Update
+                                </Button>
+                            </Link>
                         )
                     }
                     
                     <Link to={'/dashboard'} >
-                    <Button variant="contained" className={classes.button}>
-                        Cancel
-                    </Button>
+                        <Button variant="contained" className={classes.button}
+                                onClick={()=>this.cancelResource()}>
+                            Cancel
+                        </Button>
                     </Link>
-
-                    <Button variant="contained" color="secondary" className={classes.button}
-                            onClick={()=>this.deleteResource()}>
-                        Delete
-                    </Button>
+                    
+                    <Link to={'/dashboard'} >
+                        <Button variant="contained" color="secondary" className={classes.button}
+                                onClick={()=>this.deleteResource()}>
+                            Delete
+                        </Button>
+                    </Link>
 
 
                 </form>
@@ -200,8 +235,9 @@ ResourceDetail.propTypes = {
 function mapStateToProps(state) {
     return{
         userid: state.userid,
+        creatingNewResource: state.creatingNewResource,
         resource: state.resource
     }
 }
 
-export default withStyles(styles)(connect(mapStateToProps)(ResourceDetail));
+export default withStyles(styles)(connect(mapStateToProps, { creatingResource })(ResourceDetail));
