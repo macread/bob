@@ -1,6 +1,15 @@
 module.exports = {
     // Contact Callbacks
 
+    addContact: (req, res, next) => {
+        const connection = req.app.get('db');
+        const { resourceid, date, type, title, description} = req.body;
+        connection.contact_add([resourceid, date, type, title, description])
+            .then ( (contacts) => {
+                res.status(200).send(contacts)} )
+            .catch ( (err) => res.status(500).send())
+    },
+    
     getContacts: (req, res, next) => {
         const connection = req.app.get('db');
         connection.contacts_get([req.params.id])

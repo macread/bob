@@ -50,14 +50,14 @@ class Contacts extends Component {
 
     render() {
         const { classes } = this.props;
-        this.getContacts(this.props.resourceid);
+        this.getContacts(this.props.currentResourceID);
       
         return (
             <List
             component="nav"
             subheader={<ListSubheader component="div">Contacts</ListSubheader>} >
 
-                {<Link to={"/contactdetail"} >
+                {<Link to={"/contactdetail"}>
                     <IconButton color="primary" className={classes.button} component="span" onClick={ () => this.handleAddContactClick(true) }>
                         <AddIcon />
                     </IconButton>
@@ -92,4 +92,13 @@ Contacts.propTypes = {
     classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(connect(null, { creatingContact })(Contacts));
+function mapStateToProps(state){
+    return{
+        userid: state.userid,
+        creatingNewContact: state.creatingNewContact,
+        currentResourceID: state.currentResourceID,
+        currentResourceTitle: state.currentResourceTitle
+    }
+}
+
+export default withStyles(styles)(connect(mapStateToProps, { creatingContact })(Contacts));

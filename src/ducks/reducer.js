@@ -10,7 +10,9 @@ const initialState = {
     creatingNewResource: false,
     creatingNewContact: true,
     resourceList: [],
-    resource: {}
+    resource: {},
+    currentResourceID: 0,
+    currentResourceTitle: ''
 }
 
 const UPDATE_USER_SETTNGS = 'UPDATE_USER_SETTNGS';
@@ -25,6 +27,7 @@ const CREATING_RESOURCE = 'CREATING_RESOURCE';
 const UPDATE_RESOURCE = 'UPDATE_RESOURCE';
 const CREATING_CONTACT = 'CREATING_CONTACT';
 const UPDATE_CONTACT = 'UPDATE_CONTACT';
+const SET_CURRENT_RESOURCE = 'SET_CURRENT_RESOURCE';
 
 
 export default function reducer(state = initialState, action ) {
@@ -117,6 +120,10 @@ export default function reducer(state = initialState, action ) {
 
             return Object.assign({}, state, {contact: action.payload})
 
+        case SET_CURRENT_RESOURCE:
+
+            return Object.assign({}, state, {currentResourceID: action.payload.id, currentResourceTitle: action.payload.title})
+
         default:
             return state;
     }
@@ -202,6 +209,13 @@ export function creatingContact (bool) {
 export function updateContact (resource) {
     return {
         type: UPDATE_CONTACT,
+        payload: resource
+    }
+}
+
+export function setCurrentResource ( resource ) {
+    return {
+        type: SET_CURRENT_RESOURCE,
         payload: resource
     }
 }

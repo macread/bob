@@ -113,6 +113,7 @@ app.get('/auth/user/', (req, res) => {
 ;
 
 app.get('/api/contacts/:id', controller.getContacts);
+app.post('/api/contact',controller.addContact);
 
 app.get('/api/resources', controller.getResources);
 app.put('/api/resources/:id',controller.updateResource);

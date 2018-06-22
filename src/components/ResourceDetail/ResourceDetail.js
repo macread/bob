@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import NavBar from './../NavBar/NavBar';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import { creatingResource } from '../../ducks/reducer'
+import { creatingResource, setCurrentResource } from '../../ducks/reducer'
 import Contact from '../Contacts/Contacts'
 
 import PropTypes from 'prop-types';
@@ -67,14 +67,16 @@ class ResourceDetail extends Component {
                 description: ''
             })
         }else{
+            let { id, resourcedate, type, resourcetitle, url, description } = this.props.resource[0]
             this.setState({
-                resourceid: this.props.resource[0].id,
-                date: this.props.resource[0].resourcedate.substring(0,10),
-                type: this.props.resource[0].type,
-                title: this.props.resource[0].resourcetitle,
-                url: this.props.resource[0].url,
-                description: this.props.resource[0].description
+                resourceid: id,
+                date: resourcedate.substring(0,10),
+                type: type,
+                title: resourcetitle,
+                url: url,
+                description: description
             })
+            this.props.setCurrentResource({id: id, title: resourcetitle})
 
         }
     }
@@ -198,7 +200,7 @@ class ResourceDetail extends Component {
                     />
                     
                   
-                    <Contact resourceid = {this.state.resourceid} />
+                    <Contact />
 
 
                     { 
@@ -251,4 +253,4 @@ function mapStateToProps(state) {
     }
 }
 
-export default withStyles(styles)(connect(mapStateToProps, { creatingResource })(ResourceDetail));
+export default withStyles(styles)(connect(mapStateToProps, { creatingResource, setCurrentResource })(ResourceDetail));

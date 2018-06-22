@@ -3,6 +3,7 @@ import NavBar from '../NavBar/NavBar';
 import { connect } from 'react-redux';
 import { creatingContact } from '../../ducks/reducer';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
@@ -75,6 +76,43 @@ class ContactDetail extends Component {
 
         }
     }
+
+    handleChange(name, val){
+        this.setState({
+            [name]: val
+        })
+    }
+
+    addContact(){
+        this.props.creatingContact(false)
+        axios.post('/api/contact/',{
+            resourceid: this.props.currentResourceID,
+            date: this.state.date,
+            type: this.state.type,
+            title: this.state.title,
+            description: this.state.description
+         })
+    }
+
+    updateContact(){
+        axios.put(`/api/contact/${this.props.contactid}`,{
+            id: this.props.contact[0].id,
+            date: this.state.date,
+            type: this.state.type,
+            title: this.state.title,
+            description: this.state.description
+         })
+    }
+
+    cancelContact(){
+        this.props.creatingNewContact(false)
+    }
+
+    deleteContact(){
+        axios.delete(`/api/contact/${this.props.contact[0].id}`)
+    }
+
+
     render() {
         const { classes } = this.props;
 
@@ -83,9 +121,9 @@ class ContactDetail extends Component {
             <form className={classes.container} noValidate autoComplete="off">
                 <NavBar />
                 <h1>{ this.props.creatingNewContact ? 
-                        "New Contact"
+                        `New Contact for ${this.props.currentResourceTitle}`
                     :
-                        this.props.contact[0].contacttitle 
+                        `${this.props.contact[0].contacttitle} for ${this.props.currentResourceTitle}`
                 }
                 </h1>
 
@@ -149,31 +187,31 @@ class ContactDetail extends Component {
 
                    { 
                         this.props.creatingNewContact ?
-                            (<Link to={'/dashboard'} >
+                            (<Link to={'/resourcedetail'} >
                                 <Button variant="contained" color="primary" className={classes.button}
-                                        onClick={()=>this.addResource()}>
+                                        onClick={()=>this.addContact()}>
                                     Save
                                 </Button>
                             </Link>
-                        ) : (<Link to={'/dashboard'} >
+                        ) : (<Link to={'/resourcedetail'} >
                                 <Button variant="contained" color="primary" className={classes.button}
-                                    onClick={()=>this.updateResource()}>
+                                    onClick={()=>this.updateContact()}>
                                     Update
                                 </Button>
                             </Link>
                         )
                     }
 
-                    <Link to={'/dashboard'} >
+                    <Link to={'/resourcedetail'} >
                         <Button variant="contained" className={classes.button}
-                                onClick={()=>this.cancelResource()}>
+                                onClick={()=>this.cancelContact()}>
                             Cancel
                         </Button>
                     </Link>
                     
-                    <Link to={'/dashboard'} >
+                    <Link to={'/resourcedetail'} >
                         <Button variant="contained" color="secondary" className={classes.button}
-                                onClick={()=>this.deleteResource()}>
+                                onClick={()=>this.deleteContact()}>
                             Delete
                         </Button>
                     </Link>
@@ -190,7 +228,9 @@ function mapStateToProps(state) {
     return{
         userid: state.userid,
         creatingNewContact: state.creatingNewContact,
-        resource: state.resource
+        resource: state.resource,
+        currentResourceID: state.currentResourceID,
+        currentResourceTitle: state.currentResourceTitle
     }
 }
 
