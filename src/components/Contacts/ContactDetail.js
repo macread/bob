@@ -112,7 +112,7 @@ class ContactDetail extends Component {
     }
 
     cancelContact(){
-        this.props.creatingNewContact(false)
+        this.props.creatingContact(false)
     }
 
     deleteContact(){
@@ -122,8 +122,6 @@ class ContactDetail extends Component {
 
     render() {
         const { classes } = this.props;
-
-       
 
         return (
             
@@ -140,8 +138,7 @@ class ContactDetail extends Component {
                         id="date"
                         label="date"
                         type="date"
-                        defaultValue={this.state.date}
-                        value={this.state.date}
+                        value={ String(this.state.date) }
                         onChange={( e ) => this.handleChange( 'date', e.target.value ) }
                         className={classes.textField}
                         InputLabelProps={{

@@ -37,6 +37,9 @@ class Contacts extends Component {
         }
     }
 
+    componentDidMount() {
+        this.getContacts(this.props.currentResourceID);
+    }
 
     getContacts(resouceid){
         axios.get(`/api/contacts/${resouceid}`).then( results => {
@@ -54,7 +57,6 @@ class Contacts extends Component {
 
     render() {
         const { classes } = this.props;
-        this.getContacts(this.props.currentResourceID);
       
         return (
             <List
@@ -68,19 +70,18 @@ class Contacts extends Component {
                 </Link>}
 
             { 
-                this.state.contacts.map( (contact, i) => ( 
+                this.props.resource.map( (contact, i) => ( 
                 
                         <div key={i}>
                             <ListItem button >
                                     <Link to = '/contactdetail' >
                                         <IconButton color="primary" className={classes.button} component="span"
-                                                onClick={ () => this.handleEditContactClick(contact.id) }
-                                                >
+                                                onClick={ () => this.handleEditContactClick(contact.contactid) }>
                                             <EditIcon />
                                         </IconButton>
                                     </Link >
                       
-                                <ListItemText inset primary={contact.title} />
+                                <ListItemText inset primary={contact.contacttitle} />
                             </ListItem>
 
                         </div>
@@ -102,7 +103,8 @@ function mapStateToProps(state){
         userid: state.userid,
         creatingNewContact: state.creatingNewContact,
         currentResourceID: state.currentResourceID,
-        currentResourceTitle: state.currentResourceTitle
+        currentResourceTitle: state.currentResourceTitle,
+        resource: state.resource
     }
 }
 

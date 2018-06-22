@@ -38,13 +38,13 @@ class Resources extends Component {
     }
 
 
-  handleClick(resourceId) {
-    this.props.updateCollapseState(resourceId);
+  handleClick(resourceid) {
+    this.props.updateCollapseState(resourceid);
   };
 
-  handleEditClick(resourceId) {
-      this.props.updateCollapseState(resourceId);
-      this.props.getResource(resourceId);
+  handleEditClick(resourceid) {
+      this.props.updateCollapseState(resourceid);
+      this.props.getResource(resourceid);
   }
 
   handleAddResourceClick(bool){
@@ -74,7 +74,7 @@ class Resources extends Component {
                             <Link to={"/resourcedetail"} >
                                 <IconButton color="primary" className={classes.button} component="span"
                                         onClick={ () => this.handleEditClick(resource.id) }
-                                        resourceId = {resource.Id}>
+                                        resourceid = {resource.Id}>
                                     <EditIcon />
                                 </IconButton>
 

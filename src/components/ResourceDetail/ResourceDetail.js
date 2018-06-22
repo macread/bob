@@ -133,12 +133,11 @@ class ResourceDetail extends Component {
 
                     <TextField
                         id="date"
-                        label="date"
-                        type="date"
-                        defaultValue={this.state.date}
-                        value={this.state.date}
-                        onChange={( e ) => this.handleChange( 'date', e.target.value ) }
+                        label="ResouceDate"
                         className={classes.textField}
+                        type="date"
+                        value={ String(this.state.date) }
+                        onChange={( e ) => this.handleChange( 'date', e.target.value ) }
                         InputLabelProps={{
                         shrink: true,
                         }}
