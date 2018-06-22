@@ -8,6 +8,7 @@ const initialState = {
     meetings: 0,
     settingsEditing: false,
     creatingNewResource: false,
+    creatingNewContact: true,
     resourceList: [],
     resource: {}
 }
@@ -22,6 +23,9 @@ const UPDATE_COLLAPSE_STATE = 'UPDATE_COLLAPSE_STATE';
 const GET_RESOURCE = 'GET_RESOURCE';
 const CREATING_RESOURCE = 'CREATING_RESOURCE';
 const UPDATE_RESOURCE = 'UPDATE_RESOURCE';
+const CREATING_CONTACT = 'CREATING_CONTACT';
+const UPDATE_CONTACT = 'UPDATE_CONTACT';
+
 
 export default function reducer(state = initialState, action ) {
 
@@ -105,6 +109,14 @@ export default function reducer(state = initialState, action ) {
 
             return Object.assign({}, state, {resource: newResource})
 
+        case CREATING_CONTACT:
+            
+            return Object.assign({}, state, {creatingNewContact: action.payload})
+
+        case UPDATE_CONTACT:
+
+            return Object.assign({}, state, {contact: action.payload})
+
         default:
             return state;
     }
@@ -176,6 +188,20 @@ export function creatingResource (bool) {
 export function updateResource (resource) {
     return {
         type: UPDATE_RESOURCE,
+        payload: resource
+    }
+}
+
+export function creatingContact (bool) {
+    return {
+        type: CREATING_CONTACT,
+        payload: bool
+    }
+}
+
+export function updateContact (resource) {
+    return {
+        type: UPDATE_CONTACT,
         payload: resource
     }
 }

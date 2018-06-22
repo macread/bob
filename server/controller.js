@@ -1,20 +1,16 @@
 module.exports = {
-    getUser: (req, res, next) => {
+    // Contact Callbacks
+
+    getContacts: (req, res, next) => {
         const connection = req.app.get('db');
-        connection.user_get(req.user.id)
-            .then( (user)=> {
-                res.status(200).send(user)})
-            .catch( (err)=> res.status(500).send() );
+        connection.contacts_get([req.params.id])
+            .then ( (contacts) => {
+                res.status(200).send(contacts)} )
+            .catch ( (err) => res.status(500).send())
     },
 
-    updateUser: (req, res, next) => {
-        const connection = req.app.get('db');
-        const { email, resources, contacts, meetings} = req.body;
-        connection.user_update([email, resources, contacts, meetings, req.user.id])
-            .then( (user)=> {
-                res.status(200).send(user)})
-            .catch( (err)=> res.status(500).send() );
-    },
+
+    // Resource Callbacks
 
     addResource: (req, res, next) => {
         const connection = req.app.get('db');
@@ -35,8 +31,7 @@ module.exports = {
 
     deleteResource: (req, res, next) => {
         const connection = req.app.get('db');
-        const { id } = req.params;
-        connection.resource_delete([id])
+        connection.resource_delete([req.params.id])
             .then ( (resources) => {
                 res.status(200).send(resources)} )
             .catch ( (err) => res.status(500).send())
@@ -50,6 +45,25 @@ module.exports = {
             .then ( (resources) => {
                 res.status(200).send(resources)} )
             .catch ( (err) => res.status(500).send())
+    },
+
+    // USER Callbacks
+
+    getUser: (req, res, next) => {
+        const connection = req.app.get('db');
+        connection.user_get(req.user.id)
+            .then( (user)=> {
+                res.status(200).send(user)})
+            .catch( (err)=> res.status(500).send() );
+    },
+
+    updateUser: (req, res, next) => {
+        const connection = req.app.get('db');
+        const { email, resources, contacts, meetings} = req.body;
+        connection.user_update([email, resources, contacts, meetings, req.user.id])
+            .then( (user)=> {
+                res.status(200).send(user)})
+            .catch( (err)=> res.status(500).send() );
     },
 
 }

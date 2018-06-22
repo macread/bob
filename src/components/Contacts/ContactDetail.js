@@ -1,16 +1,13 @@
 import React, { Component } from 'react';
+import NavBar from '../NavBar/NavBar';
 import { connect } from 'react-redux';
-import NavBar from './../NavBar/NavBar';
+import { creatingContact } from '../../ducks/reducer';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
-import { creatingResource } from '../../ducks/reducer'
-import Contact from '../Contacts/Contacts'
 
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-
 
 const styles = theme => ({
     container: {
@@ -30,22 +27,23 @@ const styles = theme => ({
       },
   });
 
-  const resourceType = [
-    'Select...',
-    'indeed.com',
-    'Glassdoor',
-    'ZipRecruiter',
-    'Monster.com',
-    'Company Web Site',
-    'Other'
-  ];
+const contactType = [
+'Select...',
+'Application',
+'Email',
+'Text',
+'Informational Interview',
+'Phone Interview',
+'Interview',
+'Other'
+];
 
-class ResourceDetail extends Component {
+class ContactDetail extends Component {
     constructor() {
         super()
         
         this.state = {
-            resourceid: 0,
+            contactid: 0,
             date: new Date(),
             type: '',
             title: '',
@@ -56,10 +54,10 @@ class ResourceDetail extends Component {
     }
 
     componentDidMount() {
-        if (this.props.creatingNewResource) {
+        if (this.props.creatingNewContact) {
             let today = new Date();
             this.setState({
-                resourceid: 0,
+                contactid: 0,
                 date: `${today.getFullYear()}-${('00'+(today.getMonth()+1)).slice(-2)}-${today.getDate()}`,
                 type: 'Select...',
                 title: '',
@@ -68,64 +66,26 @@ class ResourceDetail extends Component {
             })
         }else{
             this.setState({
-                resourceid: this.props.resource[0].id,
-                date: this.props.resource[0].resourcedate.substring(0,10),
-                type: this.props.resource[0].type,
-                title: this.props.resource[0].resourcetitle,
-                url: this.props.resource[0].url,
-                description: this.props.resource[0].description
+                contactid: this.props.contact[0].id,
+                date: this.props.contact[0].contactdate.substring(0,10),
+                type: this.props.contact[0].type,
+                title: this.props.contact[0].contacttitle,
+                description: this.props.contact[0].description
             })
 
         }
     }
-
-    handleChange(name, val){
-        this.setState({
-            [name]: val
-        })
-    }
-
-
-    addResource(){
-        this.props.creatingResource(false)
-        axios.post('/api/resources/',{
-            date: this.state.date,
-            type: this.state.type,
-            title: this.state.title,
-            url: this.state.url,
-            description: this.state.description
-         })
-    }
-
-    updateResource(){
-        axios.put(`/api/resources/${this.props.userid}`,{
-            id: this.props.resource[0].id,
-            date: this.state.date,
-            type: this.state.type,
-            title: this.state.title,
-            url: this.state.url,
-            description: this.state.description
-         })
-    }
-
-    cancelResource(){
-        this.props.creatingResource(false)
-    }
-
-    deleteResource(){
-        axios.delete(`/api/resources/${this.props.resource[0].id}`)
-    }
-
     render() {
         const { classes } = this.props;
 
         return (
-                <form className={classes.container} noValidate autoComplete="off">
+            
+            <form className={classes.container} noValidate autoComplete="off">
                 <NavBar />
-                <h1>{ this.props.creatingNewResource ? 
-                        "New Resource"
+                <h1>{ this.props.creatingNewContact ? 
+                        "New Contact"
                     :
-                        this.props.resource[0].resourcetitle 
+                        this.props.contact[0].contacttitle 
                 }
                 </h1>
 
@@ -145,7 +105,7 @@ class ResourceDetail extends Component {
                     <TextField
                         id="select-resource"
                         select
-                        label="Resource type"
+                        label="Contact type"
                         className={classes.textField}
                         value={this.state.type}
                         onChange={( e ) => this.handleChange( 'type', e.target.value ) }
@@ -155,10 +115,10 @@ class ResourceDetail extends Component {
                             className: classes.menu,
                             },
                         }}
-                        helperText="Please select the resource type"
+                        helperText="Please select the contact type"
                         margin="normal"
                         >
-                        {resourceType.map(option => (
+                        {contactType.map(option => (
                             <option key={option} value={option}>
                                 {option}
                             </option>
@@ -171,7 +131,7 @@ class ResourceDetail extends Component {
                         className={classes.textField}
                         value={this.state.title}
                         onChange={ ( e ) => this.handleChange( 'title', e.target.value ) }
-                        helperText="Enter the title of the resource"
+                        helperText="Enter the title of the Contact"
                         margin="normal"
                     />
 
@@ -183,26 +143,12 @@ class ResourceDetail extends Component {
                         value={this.state.description}
                         onChange={ ( e ) => this.handleChange( 'description', e.target.value ) }
                         className={classes.textField}
-                        helperText="Enter enter the description of the resource"
+                        helperText="Enter enter the description of the contact"
                         margin="normal"
                     />
 
-                    <TextField
-                        id="full-width"
-                        label="URL"
-                        className={classes.textField}
-                        value={this.state.url}
-                        onChange={ ( e ) => this.handleChange( 'url', e.target.value ) }
-                        helperText="Enter the URL of the resource"
-                        margin="normal"
-                    />
-                    
-                  
-                    <Contact resourceid = {this.state.resourceid} />
-
-
-                    { 
-                        this.props.creatingNewResource ?
+                   { 
+                        this.props.creatingNewContact ?
                             (<Link to={'/dashboard'} >
                                 <Button variant="contained" color="primary" className={classes.button}
                                         onClick={()=>this.addResource()}>
@@ -231,24 +177,21 @@ class ResourceDetail extends Component {
                             Delete
                         </Button>
                     </Link>
-
-
-                </form>
+            </form>
         )
     }
 }
 
-
-ResourceDetail.propTypes = {
+ContactDetail.propTypes = {
     classes: PropTypes.object.isRequired,
   };
 
 function mapStateToProps(state) {
     return{
         userid: state.userid,
-        creatingNewResource: state.creatingNewResource,
+        creatingNewContact: state.creatingNewContact,
         resource: state.resource
     }
 }
 
-export default withStyles(styles)(connect(mapStateToProps, { creatingResource })(ResourceDetail));
+export default withStyles(styles)(connect(mapStateToProps, { creatingContact })(ContactDetail));

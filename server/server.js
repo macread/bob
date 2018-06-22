@@ -110,14 +110,17 @@ app.get('/auth/user/', (req, res) => {
         res.status(401).send('Nice try')
     }
 })
+;
 
-app.get('/api/user', controller.getUser);
-app.post('/api/user',controller.updateUser);
+app.get('/api/contacts/:id', controller.getContacts);
 
 app.get('/api/resources', controller.getResources);
 app.put('/api/resources/:id',controller.updateResource);
 app.post('/api/resources',controller.addResource);
 app.delete('/api/resources/:id',controller.deleteResource);
+
+app.get('/api/user', controller.getUser);
+app.post('/api/user',controller.updateUser)
 
 //server
 //get that server going 

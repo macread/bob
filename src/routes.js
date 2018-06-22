@@ -4,6 +4,7 @@ import Dashboard from './components/Dashboard/Dashboard';
 import NavBar from './components/NavBar/NavBar';
 import Settings from './components/Settings/Settings';
 import ResourceDetail from './components/ResourceDetail/ResourceDetail';
+import ContactDetail from './components/Contacts/ContactDetail'
 
 export default (
     <Switch>
@@ -11,5 +12,6 @@ export default (
         <Route path = "/dashboard" component = { Dashboard } />
         <Route path = "/settings" component = { Settings } />
         <Route path = "/resourcedetail" component = { ResourceDetail } />
+        <Route path = "/contactdetail" component = { ContactDetail } />
     </Switch>
 )
