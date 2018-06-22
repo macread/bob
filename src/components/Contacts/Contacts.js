@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import { creatingContact } from '../../ducks/reducer'
+import { creatingContact, setCurrentContact } from '../../ducks/reducer'
 import { connect } from 'react-redux';
 
 import PropTypes from 'prop-types';
@@ -38,14 +38,18 @@ class Contacts extends Component {
     }
 
 
-    getContacts(id){
-        axios.get(`/api/contacts/${id}`).then( results => {
+    getContacts(resouceid){
+        axios.get(`/api/contacts/${resouceid}`).then( results => {
             this.setState({ contacts: results.data });
         });
     }
 
     handleAddContactClick(bool){
         this.props.creatingContact(bool);
+    }
+
+    handleEditContactClick(contactid){
+        this.props.setCurrentContact({id: contactid});
     }
 
     render() {
@@ -67,13 +71,14 @@ class Contacts extends Component {
                 this.state.contacts.map( (contact, i) => ( 
                 
                         <div key={i}>
-                            <ListItem button  onClick={ () => this.handleClick(contact.id) }>
-                                
-                                    <IconButton color="primary" className={classes.button} component="span"
-                                            onClick={ () => this.handleEditClick(contact.id) }
-                                            contactid = {contact.id}>
-                                        <EditIcon />
-                                    </IconButton>
+                            <ListItem button >
+                                    <Link to = '/contactdetail' >
+                                        <IconButton color="primary" className={classes.button} component="span"
+                                                onClick={ () => this.handleEditContactClick(contact.id) }
+                                                >
+                                            <EditIcon />
+                                        </IconButton>
+                                    </Link >
                       
                                 <ListItemText inset primary={contact.title} />
                             </ListItem>
@@ -101,4 +106,4 @@ function mapStateToProps(state){
     }
 }
 
-export default withStyles(styles)(connect(mapStateToProps, { creatingContact })(Contacts));
+export default withStyles(styles)(connect(mapStateToProps, { creatingContact, setCurrentContact })(Contacts));

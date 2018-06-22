@@ -112,13 +112,15 @@ app.get('/auth/user/', (req, res) => {
 })
 ;
 
+app.get('/api/contact/:id', controller.getContact);
 app.get('/api/contacts/:id', controller.getContacts);
-app.post('/api/contact',controller.addContact);
+app.post('/api/contact', controller.addContact);
+app.put('/api/contact', controller.updateContact);
 
-app.get('/api/resources', controller.getResources);
-app.put('/api/resources/:id',controller.updateResource);
-app.post('/api/resources',controller.addResource);
 app.delete('/api/resources/:id',controller.deleteResource);
+app.get('/api/resources', controller.getResources);
+app.post('/api/resources',controller.addResource);
+app.put('/api/resources/:id',controller.updateResource);
 
 app.get('/api/user', controller.getUser);
 app.post('/api/user',controller.updateUser)

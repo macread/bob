@@ -8,11 +8,12 @@ const initialState = {
     meetings: 0,
     settingsEditing: false,
     creatingNewResource: false,
-    creatingNewContact: true,
+    creatingNewContact: false,
     resourceList: [],
     resource: {},
     currentResourceID: 0,
-    currentResourceTitle: ''
+    currentResourceTitle: '',
+    currentContactID: 0
 }
 
 const UPDATE_USER_SETTNGS = 'UPDATE_USER_SETTNGS';
@@ -28,6 +29,7 @@ const UPDATE_RESOURCE = 'UPDATE_RESOURCE';
 const CREATING_CONTACT = 'CREATING_CONTACT';
 const UPDATE_CONTACT = 'UPDATE_CONTACT';
 const SET_CURRENT_RESOURCE = 'SET_CURRENT_RESOURCE';
+const SET_CURRENT_CONTACT = 'SET_CURRENT_CONTACT';
 
 
 export default function reducer(state = initialState, action ) {
@@ -124,6 +126,10 @@ export default function reducer(state = initialState, action ) {
 
             return Object.assign({}, state, {currentResourceID: action.payload.id, currentResourceTitle: action.payload.title})
 
+        case SET_CURRENT_CONTACT:
+
+            return Object.assign({}, state, {currentContactID: action.payload.id})
+
         default:
             return state;
     }
@@ -217,5 +223,12 @@ export function setCurrentResource ( resource ) {
     return {
         type: SET_CURRENT_RESOURCE,
         payload: resource
+    }
+}
+
+export function setCurrentContact ( contact ) {
+    return {
+        type: SET_CURRENT_CONTACT,
+        payload: contact
     }
 }

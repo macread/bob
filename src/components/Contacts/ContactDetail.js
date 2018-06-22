@@ -33,8 +33,9 @@ const contactType = [
 'Application',
 'Email',
 'Text',
+'Phone Call',
 'Informational Interview',
-'Phone Interview',
+'Remote Interview',
 'Interview',
 'Other'
 ];
@@ -66,14 +67,7 @@ class ContactDetail extends Component {
                 description: ''
             })
         }else{
-            this.setState({
-                contactid: this.props.contact[0].id,
-                date: this.props.contact[0].contactdate.substring(0,10),
-                type: this.props.contact[0].type,
-                title: this.props.contact[0].contacttitle,
-                description: this.props.contact[0].description
-            })
-
+            this.getContact(this.props.currentContactID)
         }
     }
 
@@ -94,9 +88,22 @@ class ContactDetail extends Component {
          })
     }
 
+    getContact(contactid) {
+        axios.get(`/api/contact/${contactid}`).then( results => {
+            let { id, date, type, title, description } = results.data[0]
+            this.setState({
+                contactid: id,
+                date: date.substring(0,10),
+                type: type,
+                title: title,
+                description: description
+            })
+        });
+    }
+
     updateContact(){
-        axios.put(`/api/contact/${this.props.contactid}`,{
-            id: this.props.contact[0].id,
+        axios.put('/api/contact',{
+            id: this.props.currentContactID,
             date: this.state.date,
             type: this.state.type,
             title: this.state.title,
@@ -109,12 +116,14 @@ class ContactDetail extends Component {
     }
 
     deleteContact(){
-        axios.delete(`/api/contact/${this.props.contact[0].id}`)
+        axios.delete(`/api/contact/${this.props.currentContactID}`)
     }
 
 
     render() {
         const { classes } = this.props;
+
+       
 
         return (
             
@@ -123,7 +132,7 @@ class ContactDetail extends Component {
                 <h1>{ this.props.creatingNewContact ? 
                         `New Contact for ${this.props.currentResourceTitle}`
                     :
-                        `${this.props.contact[0].contacttitle} for ${this.props.currentResourceTitle}`
+                        `${this.state.title} for ${this.props.currentResourceTitle}`
                 }
                 </h1>
 
@@ -230,7 +239,8 @@ function mapStateToProps(state) {
         creatingNewContact: state.creatingNewContact,
         resource: state.resource,
         currentResourceID: state.currentResourceID,
-        currentResourceTitle: state.currentResourceTitle
+        currentResourceTitle: state.currentResourceTitle,
+        currentContactID: state.currentContactID
     }
 }
 

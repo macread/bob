@@ -10,6 +10,14 @@ module.exports = {
             .catch ( (err) => res.status(500).send())
     },
     
+    getContact: (req, res, next) => {
+        const connection = req.app.get('db');
+        connection.contact_get([req.params.id])
+            .then ( (contacts) => {
+                res.status(200).send(contacts)} )
+            .catch ( (err) => res.status(500).send())
+    },
+    
     getContacts: (req, res, next) => {
         const connection = req.app.get('db');
         connection.contacts_get([req.params.id])
@@ -18,6 +26,14 @@ module.exports = {
             .catch ( (err) => res.status(500).send())
     },
 
+    updateContact: (req, res, next) => {
+        const connection = req.app.get('db');
+        const { id, date, type, title, description} = req.body;
+        connection.contact_update([date, type, title, description, id])
+            .then ( (contacts) => {
+                res.status(200).send(contacts)} )
+            .catch ( (err) => res.status(500).send())
+    },
 
     // Resource Callbacks
 
