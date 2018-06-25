@@ -1,3 +1,5 @@
+
+
 const initialState = {
     userid: 0,
     avatar: '',
@@ -6,6 +8,9 @@ const initialState = {
     resources: 0,
     contacts: 0,
     meetings: 0,
+    resourcesToDate: 0,
+    contactsToDate: 0,
+    meetingsToDate: 0,
     settingsEditing: false,
     creatingNewResource: false,
     creatingNewContact: false,
@@ -13,7 +18,9 @@ const initialState = {
     resource: {},
     currentResourceID: 0,
     currentResourceTitle: '',
-    currentContactID: 0
+    currentContactID: 0,
+    timePeriodStart: '2018-06-18',
+    timePeriodStop: '2018-06-24'
 }
 
 const UPDATE_USER_SETTNGS = 'UPDATE_USER_SETTNGS';
@@ -83,8 +90,11 @@ export default function reducer(state = initialState, action ) {
                     arr[arr.length-1] = Object.assign(arr[arr.length-1],{main: 'no', collapse: false})
                 }
                 oldId = resourceList[i].id
-
+                
             }
+
+
+
             return Object.assign({}, state, {resourceList: arr})
 
         case UPDATE_COLLAPSE_STATE:

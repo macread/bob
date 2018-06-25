@@ -3,8 +3,10 @@ import axios from 'axios';
 import Settings from '../Settings/Settings';
 import { connect } from 'react-redux';
 import { updateUserSettings, prepResources } from '../../ducks/reducer';
+
 import NavBar from './../NavBar/NavBar';
 import Resources from './../Resources/Resources';
+import Progress from './Progress';
 
 
 class Dashboard extends Component {
@@ -62,6 +64,27 @@ class Dashboard extends Component {
                 <img src={this.props.avatar} alt=""/>
                 <p>{this.props.username}</p>  
                 { (!this.props.email || this.props.settingsEditing) ? <Settings /> : null } 
+                
+                <Progress 
+                    header='Resources'
+                    progress={10}
+                    togo={5}
+                />
+
+                <Progress 
+                    header='Contacts'
+                    progress={8}
+                    togo={2}
+                />
+
+                <Progress 
+                    header='Meetings'
+                    progress={1}
+                    togo={1}
+                />
+
+                
+
                 <Resources resourceData={this.state.resourceData}/>
             </div> 
         )

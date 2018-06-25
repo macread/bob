@@ -32,6 +32,7 @@ const styles = theme => ({
 
   const resourceType = [
     'Select...',
+    'Referral',
     'indeed.com',
     'Glassdoor',
     'ZipRecruiter',
