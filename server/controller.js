@@ -62,6 +62,15 @@ module.exports = {
 
     // Network Callbacks
 
+    addNetwork: (req, res, next) => {
+        const connection = req.app.get('db');
+        const { contactid, name, address, mobile, office, notes } = req.body;
+        connection.network_add([contactid, name, address, mobile, office, notes])
+            .then ( (networks) => {
+                res.status(200).send(networks)} )
+            .catch ( (err) => res.status(500).send(err))
+    },
+
     getNetwork: (req, res, next) => {
         const connection = req.app.get('db');
         connection.networks_get([req.params.id])

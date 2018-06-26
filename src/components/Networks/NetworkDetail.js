@@ -3,6 +3,7 @@ import NavBar from '../NavBar/NavBar';
 import { connect } from 'react-redux';
 import { creatingNetwork } from '../../ducks/reducer';
 import { Link } from 'react-router-dom';
+import axios from 'axios';  
 
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
@@ -61,7 +62,15 @@ class NetworkDetail extends Component {
 
     addNetwork() {
         this.props.creatingNetwork(false);
-        axios.
+        let { name, address, mobile, office, notes } = this.state;
+        axios.post('api/network',{
+            contactid: this.props.currentContactID,
+            name: name,
+            address: address, 
+            mobile: mobile, 
+            office: office, 
+            notes: notes
+        }).then(() => this.props.history.push('/contactDetail'))
 
     }
 
@@ -141,12 +150,12 @@ class NetworkDetail extends Component {
 
                 { 
                         this.props.creatingNewNetwork ?
-                            (<Link to={'/contactDetail'} >
-                                <Button variant="contained" color="primary" className={classes.button}
+                            // (<Link to={'/contactDetail'} >
+                                (<Button variant="contained" color="primary" className={classes.button}
                                         onClick={()=>this.addNetwork()}>
                                     Save
                                 </Button>
-                            </Link>
+                            // </Link>
                         ) : (<Link to={'/contactDetail'} >
                                 <Button variant="contained" color="primary" className={classes.button}
                                     onClick={()=>this.updateNetwork()}>
@@ -182,7 +191,7 @@ function mapStateToProps(state) {
     return {
         creatingNewNetwork: state.creatingNewNetwork,
         currentContactTitle: state.currentContactTitle,
-        currentContactId: state.currentContactId
+        currentContactID: state.currentContactID
     }
 }
 
