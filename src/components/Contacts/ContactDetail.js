@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import NavBar from '../NavBar/NavBar';
 import { connect } from 'react-redux';
-import { creatingContact } from '../../ducks/reducer';
+import { creatingContact, creatingNetwork } from '../../ducks/reducer';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import Networks from '../Networks/Networks'
 
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
@@ -11,6 +12,8 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
+import IconButton from '@material-ui/core/IconButton';
+import AddIcon from '@material-ui/icons/AddCircleOutline';
 
 const styles = theme => ({
     container: {
@@ -54,7 +57,8 @@ class ContactDetail extends Component {
             title: '',
             url: '',
             description: '',
-            contacts: []
+            contacts: [],
+            networks: []
         }
     }
 
@@ -103,7 +107,11 @@ class ContactDetail extends Component {
                 description: description,
                 inperson: inperson
             })
-        });
+        }).then(
+            axios.get(`/api/network/${contactid}`).then( results => {
+            this.setState({
+                networks: results.data
+            })}))
     }
 
     updateContact(){
@@ -124,6 +132,11 @@ class ContactDetail extends Component {
     deleteContact(){
         axios.delete(`/api/contact/${this.props.currentContactID}`)
     }
+
+    handleAddNetworkClick(bool){
+        this.props.creatingNetwork(bool);
+    }
+
 
 
     render() {
@@ -208,6 +221,24 @@ class ContactDetail extends Component {
                         helperText="Enter enter the description of the contact"
                         margin="normal"
                     />
+                    
+                    <span className='Network'
+                    >Network</span>
+
+                    {<Link to={"/networkdetail"} >
+                        <IconButton color="primary" className={classes.button} component="span" onClick={ () => this.handleAddNetworkClick(true) }>
+                            <AddIcon />
+                        </IconButton>
+                    </Link>}
+
+                    {this.state.networks.map( (network, i) => (
+                            <Networks
+                                key={i} 
+                                id={network.id}
+                                name={network.name}   
+                            />
+                     ))
+                    }   
 
                    { 
                         this.props.creatingNewContact ?
@@ -259,4 +290,4 @@ function mapStateToProps(state) {
     }
 }
 
-export default withStyles(styles)(connect(mapStateToProps, { creatingContact })(ContactDetail));
+export default withStyles(styles)(connect(mapStateToProps, { creatingContact, creatingNetwork })(ContactDetail));

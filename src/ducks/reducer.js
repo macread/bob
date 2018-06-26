@@ -12,11 +12,13 @@ const initialState = {
     settingsEditing: false,
     creatingNewResource: false,
     creatingNewContact: false,
+    creatingNewNetwork: false,
     resourceList: [],
     resource: {},
     currentResourceID: 0,
     currentResourceTitle: '',
-    currentContactID: 0
+    currentContactID: 0,
+    currentContactTitle: ''
 }
 
 const UPDATE_USER_SETTNGS = 'UPDATE_USER_SETTNGS';
@@ -28,8 +30,9 @@ const PREP_RESOURCES = 'PREP_RESOURCES';
 const UPDATE_COLLAPSE_STATE = 'UPDATE_COLLAPSE_STATE';
 const GET_RESOURCE = 'GET_RESOURCE';
 const CREATING_RESOURCE = 'CREATING_RESOURCE';
-const UPDATE_RESOURCE = 'UPDATE_RESOURCE';
 const CREATING_CONTACT = 'CREATING_CONTACT';
+const CREATING_NETWORK = 'CREATING_NETWORK'; 
+const UPDATE_RESOURCE = 'UPDATE_RESOURCE';
 const UPDATE_CONTACT = 'UPDATE_CONTACT';
 const SET_CURRENT_RESOURCE = 'SET_CURRENT_RESOURCE';
 const SET_CURRENT_CONTACT = 'SET_CURRENT_CONTACT';
@@ -130,13 +133,17 @@ export default function reducer(state = initialState, action ) {
 
             return Object.assign({}, state, {contact: action.payload})
 
+        case CREATING_NETWORK:
+        
+            return Object.assign({}, state, {creatingNewNetwork: action.payload})
+
         case SET_CURRENT_RESOURCE:
 
             return Object.assign({}, state, {currentResourceID: action.payload.id, currentResourceTitle: action.payload.title})
 
         case SET_CURRENT_CONTACT:
 
-            return Object.assign({}, state, {currentContactID: action.payload.id})
+            return Object.assign({}, state, {currentContactID: action.payload.id, currentContactTitle: action.payload.title})
 
         case SET_RESOURCE_COUNT:
         
@@ -236,6 +243,13 @@ export function updateContact (resource) {
     return {
         type: UPDATE_CONTACT,
         payload: resource
+    }
+}
+
+export function creatingNetwork (bool) {
+    return {
+        type: CREATING_NETWORK,
+        payload: bool
     }
 }
 

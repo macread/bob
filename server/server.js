@@ -119,6 +119,8 @@ app.get('/api/contacts/:id', controller.getContacts);
 app.post('/api/contact', controller.addContact);
 app.put('/api/contact', controller.updateContact);
 
+app.get('/api/network/:id', controller.getNetwork)
+
 app.get('/api/meetings/', controller.getMeetingCount);
 
 app.delete('/api/resources/:id',controller.deleteResource);

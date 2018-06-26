@@ -51,8 +51,8 @@ class Contacts extends Component {
         this.props.creatingContact(bool);
     }
 
-    handleEditContactClick(contactid){
-        this.props.setCurrentContact({id: contactid});
+    handleEditContactClick(contactid,title){
+        this.props.setCurrentContact({id: contactid, title: title});
     }
 
     render() {
@@ -76,7 +76,7 @@ class Contacts extends Component {
                             <ListItem button >
                                     <Link to = '/contactdetail' >
                                         <IconButton color="primary" className={classes.button} component="span"
-                                                onClick={ () => this.handleEditContactClick(contact.contactid) }>
+                                                onClick={ () => this.handleEditContactClick(contact.contactid,contact.contacttitle) }>
                                             <EditIcon />
                                         </IconButton>
                                     </Link >

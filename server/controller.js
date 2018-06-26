@@ -60,6 +60,16 @@ module.exports = {
             .catch ( (err) => res.status(500).send())
     },
 
+    // Network Callbacks
+
+    getNetwork: (req, res, next) => {
+        const connection = req.app.get('db');
+        connection.networks_get([req.params.id])
+            .then ( (networks) => {
+                res.status(200).send(networks)} )
+            .catch ( (err) => res.status(500).send(err))
+    },
+
     // Resource Callbacks
 
     addResource: (req, res, next) => {
