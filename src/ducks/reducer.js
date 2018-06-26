@@ -1,5 +1,3 @@
-
-
 const initialState = {
     userid: 0,
     avatar: '',
@@ -8,9 +6,9 @@ const initialState = {
     resources: 0,
     contacts: 0,
     meetings: 0,
-    resourcesToDate: 0,
-    contactsToDate: 0,
-    meetingsToDate: 0,
+    resourceCount: 0,
+    contactCount: 0,
+    meetingCount: 0,
     settingsEditing: false,
     creatingNewResource: false,
     creatingNewContact: false,
@@ -18,9 +16,7 @@ const initialState = {
     resource: {},
     currentResourceID: 0,
     currentResourceTitle: '',
-    currentContactID: 0,
-    timePeriodStart: '2018-06-18',
-    timePeriodStop: '2018-06-24'
+    currentContactID: 0
 }
 
 const UPDATE_USER_SETTNGS = 'UPDATE_USER_SETTNGS';
@@ -37,6 +33,10 @@ const CREATING_CONTACT = 'CREATING_CONTACT';
 const UPDATE_CONTACT = 'UPDATE_CONTACT';
 const SET_CURRENT_RESOURCE = 'SET_CURRENT_RESOURCE';
 const SET_CURRENT_CONTACT = 'SET_CURRENT_CONTACT';
+const SET_RESOURCE_COUNT = 'SET_RESOURCE_COUNT';
+const SET_CONTACT_COUNT = 'SET_CONTACT_COUNT';
+const SET_MEETING_COUNT = 'SET_MEETING_COUNT';
+
 
 
 export default function reducer(state = initialState, action ) {
@@ -93,8 +93,6 @@ export default function reducer(state = initialState, action ) {
                 
             }
 
-
-
             return Object.assign({}, state, {resourceList: arr})
 
         case UPDATE_COLLAPSE_STATE:
@@ -139,6 +137,18 @@ export default function reducer(state = initialState, action ) {
         case SET_CURRENT_CONTACT:
 
             return Object.assign({}, state, {currentContactID: action.payload.id})
+
+        case SET_RESOURCE_COUNT:
+        
+            return Object.assign({}, state, {resourceCount: action.payload})
+
+        case SET_CONTACT_COUNT:
+        
+            return Object.assign({}, state, {contactCount: action.payload})
+
+        case SET_MEETING_COUNT:
+        
+            return Object.assign({}, state, {meetingCount: action.payload})
 
         default:
             return state;
@@ -240,5 +250,26 @@ export function setCurrentContact ( contact ) {
     return {
         type: SET_CURRENT_CONTACT,
         payload: contact
+    }
+}
+
+export function setResourceCount( count ) {
+    return {
+        type: SET_RESOURCE_COUNT,
+        payload: count
+    }
+}
+
+export function setContactCount( count ) {
+    return {
+        type: SET_CONTACT_COUNT,
+        payload: count
+    }
+}
+
+export function setMeetingCount( count ) {
+    return {
+        type: SET_MEETING_COUNT,
+        payload: count
     }
 }

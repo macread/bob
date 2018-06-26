@@ -9,6 +9,8 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Switch from '@material-ui/core/Switch';
 
 const styles = theme => ({
     container: {
@@ -48,6 +50,7 @@ class ContactDetail extends Component {
             contactid: 0,
             date: new Date(),
             type: '',
+            inperson: false,
             title: '',
             url: '',
             description: '',
@@ -84,19 +87,21 @@ class ContactDetail extends Component {
             date: this.state.date,
             type: this.state.type,
             title: this.state.title,
-            description: this.state.description
+            description: this.state.description,
+            inperson: this.state.inperson
          })
     }
 
     getContact(contactid) {
         axios.get(`/api/contact/${contactid}`).then( results => {
-            let { id, date, type, title, description } = results.data[0]
+            let { id, date, type, title, description, inperson } = results.data[0]
             this.setState({
                 contactid: id,
                 date: date.substring(0,10),
                 type: type,
                 title: title,
-                description: description
+                description: description,
+                inperson: inperson
             })
         });
     }
@@ -107,7 +112,8 @@ class ContactDetail extends Component {
             date: this.state.date,
             type: this.state.type,
             title: this.state.title,
-            description: this.state.description
+            description: this.state.description,
+            inperson: this.state.inperson
          })
     }
 
@@ -168,6 +174,18 @@ class ContactDetail extends Component {
                             </option>
                         ))}
                     </TextField>
+
+                    <FormControlLabel
+                        control={
+                            <Switch
+                                checked={this.state.inperson}
+                                onChange={ ( e ) => this.handleChange( 'inperson', e.target.checked )}
+                                value="true"
+                                color="primary"
+                            />
+                        }
+                        label="Meeting"
+                    />
 
                     <TextField
                         id="full-width"

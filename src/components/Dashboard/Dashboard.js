@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import Settings from '../Settings/Settings';
 import { connect } from 'react-redux';
-import { updateUserSettings, prepResources } from '../../ducks/reducer';
+import { updateUserSettings, prepResources, setResourceCount, setContactCount, setMeetingCount } from '../../ducks/reducer';
 
 import NavBar from './../NavBar/NavBar';
 import Resources from './../Resources/Resources';
@@ -18,7 +18,9 @@ class Dashboard extends Component {
                 avatar: '',
                 username: '',
                 email: '',
-                resourceData: []
+                resourceData: [],
+                from: '2018-06-18',
+                to: '2018-06-24'
             }
     }
 
@@ -30,57 +32,80 @@ class Dashboard extends Component {
     }
 
     getUserData() {
-        axios.get('/api/user/').then( results => {
-            let { id, avatar, username, email, resources, contacts, meetings } = results.data[0];
-
-            this.setState({ 
-                userid: id,
-                avatar: avatar,
-                username: username,
-                email: email
-            });
+ 
+    axios.get('/api/resources/count', {params: {from: this.state.from, to: this.state.to}})
+            .then( results => {
+                this.props.setResourceCount(parseInt(results.data.count,10))
+        }).then(
+            axios.get('/api/contacts/', {params: {from: this.state.from, to: this.state.to}})
+                .then( results => {
+                    this.props.setContactCount(parseInt(results.data.count,10))
+            })).then(
+                axios.get('/api/meetings/', {params: {from: this.state.from, to: this.state.to}})
+                    .then( results => {
+                        this.props.setMeetingCount(parseInt(results.data.count,10))
+                })).then(
+                    axios.get('/api/user/').then( results => {
+                        let { id, avatar, username, email, resources, contacts, meetings } = results.data[0];
             
-            this.props.updateUserSettings({
-                userid: id,
-                avatar,
-                username,
-                email,
-                resources,
-                contacts,
-                meetings
-            });
-        });
-
-        axios.get('/api/resources').then( results => {
-           this.props.prepResources(results.data)
-        })
-
+                        this.setState({ 
+                            userid: id,
+                            avatar: avatar,
+                            username: username,
+                            email: email
+                        });
+                        
+                        this.props.updateUserSettings({
+                            userid: id,
+                            avatar,
+                            username,
+                            email,
+                            resources,
+                            contacts,
+                            meetings
+                        });
+                }).then(axios.get('/api/resources').then( results => {
+                    this.props.prepResources(results.data)
+                        }))
+            
+            );
     }
 
     render() {
+        let { resources, resourceCount, contacts, contactCount, meetings, meetingCount } = this.props;
+
+        let resourcesTogo = resources - resourceCount;
+        if (resourcesTogo<0) { resourcesTogo = 0 }
+
+        let contactsTogo = contacts - contactCount;
+        if (contactsTogo<0) { contactsTogo = 0 }
+
+        let meetingsTogo = meetings - meetingCount;
+        if (meetingsTogo<0) { meetingsTogo = 0 }
+
         return (
             <div className='Dashboard'>
                 <NavBar />
                 <img src={this.props.avatar} alt=""/>
                 <p>{this.props.username}</p>  
-                { (!this.props.email || this.props.settingsEditing) ? <Settings /> : null } 
+                {/* { (!this.props.email || this.props.settingsEditing) ? <Settings /> : null }  */}
                 
                 <Progress 
                     header='Resources'
-                    progress={10}
-                    togo={5}
+                    progress={this.props.resourceCount}
+                    togo={resourcesTogo}
                 />
 
                 <Progress 
                     header='Contacts'
-                    progress={8}
-                    togo={2}
+                    progress={this.props.contactCount}
+                    togo={contactsTogo}
                 />
 
                 <Progress 
                     header='Meetings'
-                    progress={1}
-                    togo={1}
+                    progress={this.props.meetingCount}
+                    togo={meetingsTogo}
                 />
 
                 
@@ -97,7 +122,13 @@ function MapStateToProps(state){
         username: state.username,
         avatar: state.avatar,
         email: state.email,
-        settingsEditing: state.settingsEditing
+        settingsEditing: state.settingsEditing,
+        resources: state.resources,
+        resourceCount: state.resourceCount,
+        contacts: state.contacts,
+        contactCount: state.contactCount,
+        meetings: state.meetings,
+        meetingCount: state.meetingCount
     });
 }
-export default connect(MapStateToProps, { updateUserSettings, prepResources })(Dashboard);
+export default connect(MapStateToProps, { updateUserSettings, prepResources, setResourceCount, setContactCount, setMeetingCount })(Dashboard);

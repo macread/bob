@@ -3,10 +3,18 @@ module.exports = {
 
     addContact: (req, res, next) => {
         const connection = req.app.get('db');
-        const { resourceid, date, type, title, description} = req.body;
-        connection.contact_add([resourceid, date, type, title, description])
+        const { resourceid, date, type, title, description, inperson } = req.body;
+        connection.contact_add([resourceid, date, type, title, description, inperson])
             .then ( (contacts) => {
                 res.status(200).send(contacts)} )
+            .catch ( (err) => res.status(500).send())
+    },
+
+    deleteContact: (req, res, next) => {
+        const connection = req.app.get('db');
+        connection.contact_delete([req.params.id])
+            .then ( (resources) => {
+                res.status(200).send(resources)} )
             .catch ( (err) => res.status(500).send())
     },
     
@@ -18,6 +26,14 @@ module.exports = {
             .catch ( (err) => res.status(500).send())
     },
     
+    getContactCount: (req, res, next) => {
+        const connection = req.app.get('db');
+        connection.contacts_getCount([req.query.from, req.query.to])
+            .then ( (contacts) => {
+                res.status(200).send(contacts[0])} )
+            .catch ( (err) => res.status(500).send())
+    },
+
     getContacts: (req, res, next) => {
         const connection = req.app.get('db');
         connection.contacts_get([req.params.id])
@@ -26,12 +42,21 @@ module.exports = {
             .catch ( (err) => res.status(500).send())
     },
 
+
     updateContact: (req, res, next) => {
         const connection = req.app.get('db');
-        const { id, date, type, title, description} = req.body;
-        connection.contact_update([date, type, title, description, id])
+        const { id, date, type, title, description, inperson} = req.body;
+        connection.contact_update([date, type, title, description, inperson, id])
             .then ( (contacts) => {
                 res.status(200).send(contacts)} )
+            .catch ( (err) => res.status(500).send())
+    },
+
+    getMeetingCount: (req, res, next) => {
+        const connection = req.app.get('db');
+        connection.contacts_getMeetingCount([req.query.from, req.query.to])
+            .then ( (contacts) => {
+                res.status(200).send(contacts[0])} )
             .catch ( (err) => res.status(500).send())
     },
 
@@ -46,12 +71,21 @@ module.exports = {
             .catch ( (err) => res.status(500).send())
     },
 
+    getResourceCount: (req, res, next) => {
+        const connection = req.app.get('db');
+        connection.resources_getCount([req.query.from, req.query.to])
+        .then ( (resources) => {
+            res.status(200).send(resources[0])} )
+        .catch ( (err) => res.status(500).send())
+    },
+
     getResources: (req, res, next) => {
         const connection = req.app.get('db');
         connection.resources_get(req.user.id)
             .then ( (resources) => {
                 res.status(200).send(resources)} )
             .catch ( (err) => res.status(500).send())
+
     },
 
     deleteResource: (req, res, next) => {
