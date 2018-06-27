@@ -5,7 +5,7 @@ import NavBar from './components/NavBar/NavBar';
 import Settings from './components/Settings/Settings';
 import ResourceDetail from './components/ResourceDetail/ResourceDetail';
 import ContactDetail from './components/Contacts/ContactDetail';
-import Networks from './components/Networks/Networks';
+import NetworkList from './components/Networks/NetworkList';
 import NetworkDetail from './components/Networks/NetworkDetail';
 
 export default (
@@ -15,7 +15,7 @@ export default (
         <Route path = "/settings" component = { Settings } />
         <Route path = "/resourcedetail" component = { ResourceDetail } />
         <Route path = "/contactdetail" component = { ContactDetail } />
-        <Route path = "/networks" component = { Networks } />
+        <Route path = "/networks" component = { NetworkList } />
         <Route path = "/networkdetail/:networkid" component = { NetworkDetail } />
     </Switch>
 )

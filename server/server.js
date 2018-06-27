@@ -124,6 +124,7 @@ app.put('/api/contact', controller.updateContact);
 
 
 app.get('/api/network/:id', controller.getNetwork);
+app.get('/api/networks', controller.getAllNetworks);
 app.get('/api/networks/:id', controller.getNetworks);
 app.post('/api/networks', controller.addNetwork);
 
