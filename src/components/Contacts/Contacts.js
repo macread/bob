@@ -63,23 +63,20 @@ class Contacts extends Component {
             component="nav"
             subheader={<ListSubheader component="div">Contacts</ListSubheader>} >
 
-                {<Link to={"/contactdetail"}>
-                    <IconButton color="primary" className={classes.button} component="span" onClick={ () => this.handleAddContactClick(true) }>
-                        <AddIcon />
-                    </IconButton>
-                </Link>}
+             
+            <IconButton component={Link} to='/contactdetail' color="primary" className={classes.button} onClick={ () => this.handleAddContactClick(true) }>
+                <AddIcon />
+            </IconButton>
 
             { 
                 this.props.resource.map( (contact, i) => ( 
                 
                         <div key={i}>
                             <ListItem button >
-                                    <Link to = '/contactdetail' >
-                                        <IconButton color="primary" className={classes.button} component="span"
-                                                onClick={ () => this.handleEditContactClick(contact.contactid,contact.contacttitle) }>
-                                            <EditIcon />
-                                        </IconButton>
-                                    </Link >
+                                <IconButton component={Link} to='/contactdetail' color="primary" className={classes.button} component="span"
+                                        onClick={ () => this.handleEditContactClick(contact.contactid,contact.contacttitle) }>
+                                    <EditIcon />
+                                </IconButton>
                       
                                 <ListItemText inset primary={contact.contacttitle} />
                             </ListItem>

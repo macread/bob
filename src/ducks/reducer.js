@@ -21,6 +21,7 @@ const initialState = {
     currentContactTitle: ''
 }
 
+const RESET_USER_ID = 'RESET_USER_ID';
 const UPDATE_USER_SETTNGS = 'UPDATE_USER_SETTNGS';
 const UPDATE_EMAIL = 'UPDATE_EMAIL';
 const INCREMENT = 'INCREMENT';
@@ -48,6 +49,10 @@ export default function reducer(state = initialState, action ) {
 
         case UPDATE_USER_SETTNGS:
             return Object.assign({}, state, action.payload)
+
+        case RESET_USER_ID:
+
+        return Object.assign({}, state, {userid: 0})
 
         case UPDATE_EMAIL:
             return Object.assign({}, state, { email: action.payload, settingsEditing: true })
@@ -167,6 +172,12 @@ export function updateUserSettings(user){
     return {
         type: UPDATE_USER_SETTNGS,
         payload: user
+    }
+}
+
+export function resetUserID(){
+    return {
+        type: RESET_USER_ID
     }
 }
 

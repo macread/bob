@@ -60,25 +60,20 @@ class Resources extends Component {
           component="nav"
           subheader={<ListSubheader component="div">Resources</ListSubheader>} >
 
-            {<Link to={"/resourcedetail"} >
-                <IconButton color="primary" className={classes.button} component="span" onClick={ () => this.handleAddResourceClick(true) }>
-                    <AddIcon />
-                </IconButton>
-            </Link>}
+            <IconButton component={Link} to="/resourcedetail" color="primary" className={classes.button} onClick={ () => this.handleAddResourceClick(true) }>
+                <AddIcon />
+            </IconButton>
 
           { 
             this.props.resourceList.map( (resource, i) => ( 
                 (resource.main === 'yes') ? (
                     <div key={i}>
                         <ListItem button  onClick={ () => this.handleClick(resource.id) }>
-                            <Link to={"/resourcedetail"} >
-                                <IconButton color="primary" className={classes.button} component="span"
+                                <IconButton component={Link} to="/resourcedetail" color="primary" className={classes.button} 
                                         onClick={ () => this.handleEditClick(resource.id) }
                                         resourceid = {resource.Id}>
                                     <EditIcon />
                                 </IconButton>
-
-                            </Link>
                             <ListItemText inset primary={resource.resourcetitle} />
                             {resource.collapse ? <ExpandLess /> : <ExpandMore/>}
                         </ListItem>

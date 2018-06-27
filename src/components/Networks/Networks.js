@@ -6,6 +6,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import EmailIcon from '@material-ui/icons/Email';
+import EditIcon from '@material-ui/icons/Edit'
 
 const styles = theme => ({
   root: {
@@ -22,9 +23,12 @@ function Networks(props) {
       <List component="nav">
         <ListItem button>
           <ListItemIcon>
-            <EmailIcon />
+            <EditIcon />
           </ListItemIcon>
           <ListItemText primary={props.name} />
+          <ListItemIcon>
+            <EmailIcon />
+          </ListItemIcon>
         </ListItem>
       </List>
     </div>

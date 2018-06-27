@@ -225,11 +225,10 @@ class ContactDetail extends Component {
                     <span className='Network'
                     >Network</span>
 
-                    {<Link to={"/networkdetail"} >
-                        <IconButton color="primary" className={classes.button} component="span" onClick={ () => this.handleAddNetworkClick(true) }>
-                            <AddIcon />
-                        </IconButton>
-                    </Link>}
+                    
+                    <IconButton color="primary" component={Link} to='/networkdetail' className={classes.button} onClick={ () => this.handleAddNetworkClick(true) }>
+                        <AddIcon />
+                    </IconButton>
 
                     {this.state.networks.map( (network, i) => (
                             <Networks
@@ -242,34 +241,27 @@ class ContactDetail extends Component {
 
                    { 
                         this.props.creatingNewContact ?
-                            (<Link to={'/resourcedetail'} >
-                                <Button variant="contained" color="primary" className={classes.button}
+                                (<Button variant="contained" color="primary" component={Link} to='/resourcedetail' className={classes.button}
                                         onClick={()=>this.addContact()}>
                                     Save
                                 </Button>
-                            </Link>
-                        ) : (<Link to={'/resourcedetail'} >
-                                <Button variant="contained" color="primary" className={classes.button}
+                        ) : (<Button variant="contained" color="primary" component={Link} to='/resourcedetail' className={classes.button}
                                     onClick={()=>this.updateContact()}>
                                     Update
                                 </Button>
-                            </Link>
                         )
                     }
 
-                    <Link to={'/resourcedetail'} >
-                        <Button variant="contained" className={classes.button}
-                                onClick={()=>this.cancelContact()}>
-                            Cancel
-                        </Button>
-                    </Link>
                     
-                    <Link to={'/resourcedetail'} >
-                        <Button variant="contained" color="secondary" className={classes.button}
-                                onClick={()=>this.deleteContact()}>
-                            Delete
-                        </Button>
-                    </Link>
+                    <Button variant="contained" className={classes.button} component={Link} to='/resourcedetail' 
+                            onClick={()=>this.cancelContact()}>
+                        Cancel
+                    </Button>
+                    
+                    <Button variant="contained" color="secondary" className={classes.button} component={Link} to='/resourcedetail' 
+                            onClick={()=>this.deleteContact()}>
+                        Delete
+                    </Button>
             </form>
         )
     }

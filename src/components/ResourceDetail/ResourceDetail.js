@@ -205,34 +205,27 @@ class ResourceDetail extends Component {
 
                     { 
                         this.props.creatingNewResource ?
-                            (<Link to={'/dashboard'} >
-                                <Button variant="contained" color="primary" className={classes.button}
+                            (<Button component={Link} to="/dashboard" variant="contained" color="primary" className={classes.button}
                                         onClick={()=>this.addResource()}>
                                     Save
                                 </Button>
-                            </Link>
-                        ) : (<Link to={'/dashboard'} >
-                                <Button variant="contained" color="primary" className={classes.button}
+                        ) : (<Button component={Link} to="/dashboard" variant="contained" color="primary" className={classes.button}
                                     onClick={()=>this.updateResource()}>
                                     Update
                                 </Button>
-                            </Link>
                         )
                     }
 
-                    <Link to={'/dashboard'} >
-                        <Button variant="contained" className={classes.button}
+                        <Button component={Link} to="/dashboard" variant="contained" className={classes.button}
                                 onClick={()=>this.cancelResource()}>
                             Cancel
                         </Button>
-                    </Link>
                     
-                    <Link to={'/dashboard'} >
-                        <Button variant="contained" color="secondary" className={classes.button}
+
+                        <Button component={Link} to="/dashboard" variant="contained" color="secondary" className={classes.button}
                                 onClick={()=>this.deleteResource()}>
                             Delete
                         </Button>
-                    </Link>
 
 
                 </form>

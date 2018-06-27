@@ -150,34 +150,26 @@ class NetworkDetail extends Component {
 
                 { 
                         this.props.creatingNewNetwork ?
-                            // (<Link to={'/contactDetail'} >
                                 (<Button variant="contained" color="primary" className={classes.button}
                                         onClick={()=>this.addNetwork()}>
                                     Save
                                 </Button>
-                            // </Link>
-                        ) : (<Link to={'/contactDetail'} >
-                                <Button variant="contained" color="primary" className={classes.button}
+                        ) : (<Button variant="contained" color="primary" className={classes.button}
                                     onClick={()=>this.updateNetwork()}>
                                     Update
                                 </Button>
-                            </Link>
                         )
                     }
 
-                    <Link to={'/contactDetail'} >
-                        <Button variant="contained" className={classes.button}
-                                onClick={()=>this.cancelNetwork()}>
-                            Cancel
-                        </Button>
-                    </Link>
+                    <Button variant="contained" className={classes.button} component={Link} to='/contactDetail'
+                            onClick={()=>this.cancelNetwork()}>
+                        Cancel
+                    </Button>
                     
-                    <Link to={'/contactDetail'} >
-                        <Button variant="contained" color="secondary" className={classes.button}
-                                onClick={()=>this.deleteNetwork()}>
-                            Delete
-                        </Button>
-                    </Link>
+                    <Button variant="contained" color="secondary" className={classes.button}
+                            onClick={()=>this.deleteNetwork()}>
+                        Delete
+                    </Button>
             </form>
         )
     }

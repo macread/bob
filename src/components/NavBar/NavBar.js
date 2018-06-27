@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import { resetUserID } from '../../ducks/reducer'
 
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
@@ -49,6 +50,7 @@ class MenuAppBar extends React.Component {
   };
 
   handleLogout = () => {
+    this.props.resetUserID();
     axios.get('/api/logout').then(this.props.history.push('/'))
   };
 
@@ -93,7 +95,7 @@ class MenuAppBar extends React.Component {
                   open={open}
                   onClose={this.handleClose}
                 >
-                  <Link to={'/settings'} ><MenuItem onClick={this.handleClose}>Settings</MenuItem></Link>
+                  <MenuItem component={Link} to="/settings" >Settings</MenuItem>
                   <MenuItem onClick={this.handleLogout}>Logout</MenuItem>
                 </Menu>
               </div>
@@ -118,4 +120,4 @@ function mapStateToProps(state){
   })
 }
 
-export default withStyles(styles)(withRouter((connect(mapStateToProps)(MenuAppBar))));
+export default withStyles(styles)(withRouter((connect(mapStateToProps, { resetUserID })(MenuAppBar))));
