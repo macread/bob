@@ -25,6 +25,7 @@ const {
     CONNECTION_STRING
 } = process.env;
 
+
 const app = express(); //server
 app.use(bodyParser.json());
 
@@ -64,11 +65,13 @@ passport.use(
             db.user_find([id]).then( user => {
                 if ( user[0] ){
                     done(null, user[0].id)  //just want to save the ID to save memory
+
                 } else {
                     //create a new user
                     db.user_create([displayName, picture, id]).then( (createdUser) => {
                         done(null, createdUser[0].id) //save the new id
                     })
+
                 }
             })
         }
@@ -95,7 +98,7 @@ passport.deserializeUser((id, done) => {
 app.get('/auth', passport.authenticate('auth0'));
 app.get('/auth/callback', passport.authenticate('auth0', {
     successRedirect: 'http://localhost:3000/#/dashboard' // change to 3005 to build
-}))
+} ))
 
 app.get('/api/logout', (req, res) => {
     req.logOut();

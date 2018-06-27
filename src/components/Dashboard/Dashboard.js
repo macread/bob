@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import Settings from '../Settings/Settings';
 import { connect } from 'react-redux';
 import { updateUserSettings, prepResources, setResourceCount, setContactCount, setMeetingCount } from '../../ducks/reducer';
 
@@ -8,6 +7,26 @@ import NavBar from './../NavBar/NavBar';
 import Resources from './../Resources/Resources';
 import Progress from './Progress';
 
+import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/core/styles';
+import Input from '@material-ui/core/Input';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import FormControl from '@material-ui/core/FormControl';
+import NativeSelect from '@material-ui/core/NativeSelect';
+
+const styles = theme => ({
+    root: {
+      display: 'flex',
+      flexWrap: 'wrap',
+    },
+    formControl: {
+      margin: theme.spacing.unit,
+      minWidth: 120,
+    },
+    selectEmpty: {
+      marginTop: theme.spacing.unit * 2,
+    },
+  });
 
 class Dashboard extends Component {
 
@@ -19,8 +38,9 @@ class Dashboard extends Component {
                 username: '',
                 email: '',
                 resourceData: [],
-                from: '2018-06-18',
-                to: '2018-06-24'
+                from: '0000-00-00',
+                to: '0000-00-00',
+                days: '7'
             }
     }
 
@@ -71,24 +91,59 @@ class Dashboard extends Component {
             );
     }
 
+    updateDateRange(days){
+        var d = new Date();
+        var to = `${d.getFullYear()}-${('00'+(d.getMonth()+1)).slice(-2)}-${d.getDate()}`
+
+        d.setDate(d.getDate()-days);
+        var from = `${d.getFullYear()}-${('00'+(d.getMonth()+1)).slice(-2)}-${d.getDate()}`
+
+        this.setState({
+            from: from,
+            to: to
+        })
+    }
+
+    handleChange(days){
+        this.setState({days: days})
+        this.updateDateRange(days)
+        this.getUserData()
+    }
+
     render() {
+        const { classes } = this.props;
+
         let { resources, resourceCount, contacts, contactCount, meetings, meetingCount } = this.props;
 
-        let resourcesTogo = resources - resourceCount;
+        let resourcesTogo = (resources * this.state.days) - resourceCount;
         if (resourcesTogo<0) { resourcesTogo = 0 }
 
-        let contactsTogo = contacts - contactCount;
+        let contactsTogo = (contacts * this.state.days) - contactCount;
         if (contactsTogo<0) { contactsTogo = 0 }
 
-        let meetingsTogo = meetings - meetingCount;
+        let meetingsTogo = (meetings * this.state.days) - meetingCount;
         if (meetingsTogo<0) { meetingsTogo = 0 }
 
         return (
             <div className='Dashboard'>
                 <NavBar />
-                <img src={this.props.avatar} alt=""/>
-                <p>{this.props.username}</p>  
-                {/* { (!this.props.email || this.props.settingsEditing) ? <Settings /> : null }  */}
+
+                <FormControl className={classes.formControl}>
+                
+                <NativeSelect
+                    value={this.state.days}
+                    onChange={e => this.handleChange(e.target.value)}
+                    input={<Input name="days" id="days-native-helper" />}
+                >
+                    <option value={7}>Last 7 days</option>
+                    <option value={14}>Last 14 days</option>
+                    <option value={30}>Last 30 days</option>
+                    <option value={45}>Last 45 days</option>
+                    <option value={60}>Last 60 days</option>
+                    <option value={120}>Last 120 days</option>
+                </NativeSelect>
+                <FormHelperText>Select the number of days to show your progress towards your goals</FormHelperText>
+                </FormControl>
                 
                 <Progress 
                     header='Resources'
@@ -116,6 +171,10 @@ class Dashboard extends Component {
     }
 }
 
+Dashboard.propTypes = {
+    classes: PropTypes.object.isRequired,
+  };
+
 function MapStateToProps(state){
     return({
         userid: state.userid,
@@ -131,4 +190,4 @@ function MapStateToProps(state){
         meetingCount: state.meetingCount
     });
 }
-export default connect(MapStateToProps, { updateUserSettings, prepResources, setResourceCount, setContactCount, setMeetingCount })(Dashboard);
+export default withStyles(styles)(connect(MapStateToProps, { updateUserSettings, prepResources, setResourceCount, setContactCount, setMeetingCount })(Dashboard));
