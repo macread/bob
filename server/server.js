@@ -119,8 +119,10 @@ app.get('/api/contacts/:id', controller.getContacts);
 app.post('/api/contact', controller.addContact);
 app.put('/api/contact', controller.updateContact);
 
+
 app.get('/api/network/:id', controller.getNetwork);
-app.post('/api/network', controller.addNetwork);
+app.get('/api/networks/:id', controller.getNetworks);
+app.post('/api/networks', controller.addNetwork);
 
 app.get('/api/meetings/', controller.getMeetingCount);
 

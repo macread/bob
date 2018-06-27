@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
@@ -7,6 +8,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import EmailIcon from '@material-ui/icons/Email';
 import EditIcon from '@material-ui/icons/Edit'
+import IconButton from '@material-ui/core/IconButton';
 
 const styles = theme => ({
   root: {
@@ -18,13 +20,14 @@ const styles = theme => ({
 
 function Networks(props) {
   const { classes } = props;
+
   return (
     <div className={classes.root}>
       <List component="nav">
         <ListItem button>
-          <ListItemIcon>
+          <IconButton component={Link} to={`/networkdetail/${props.id}`} color="primary" className={classes.button}>
             <EditIcon />
-          </ListItemIcon>
+          </IconButton>
           <ListItemText primary={props.name} />
           <ListItemIcon>
             <EmailIcon />

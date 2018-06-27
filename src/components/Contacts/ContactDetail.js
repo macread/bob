@@ -108,7 +108,7 @@ class ContactDetail extends Component {
                 inperson: inperson
             })
         }).then(
-            axios.get(`/api/network/${contactid}`).then( results => {
+            axios.get(`/api/networks/${contactid}`).then( results => {
             this.setState({
                 networks: results.data
             })}))

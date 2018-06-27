@@ -38,7 +38,7 @@ class NetworkDetail extends Component {
             name: '',
             address: '',
             mobile: '',
-            office: '',
+            work: '',
             notes: ''
         }
     }
@@ -47,28 +47,32 @@ class NetworkDetail extends Component {
 
     componentDidMount() {
         if (!this.props.creatingNewNetwork) {
-            let { id, name, address, mobile, office, notes } = this.props.resource[0]
-            this.setState({
-                networkid: id,
-                name: name,
-                address: address,
-                mobile: mobile,
-                office: office,
-                notes: notes
+            axios.get(`/api/network/${this.props.match.params.networkid}`).then(results => {
+                let { id, name, address, mobile, work, notes } = results.data[0]
+                this.setState({
+                    networkid: id,
+                    name: name,
+                    address: address,
+                    mobile: mobile,
+                    work: work,
+                    notes: notes
+                })
             })
 
+
+            
         }
     }
 
     addNetwork() {
         this.props.creatingNetwork(false);
-        let { name, address, mobile, office, notes } = this.state;
+        let { name, address, mobile, work, notes } = this.state;
         axios.post('api/network',{
             contactid: this.props.currentContactID,
             name: name,
             address: address, 
             mobile: mobile, 
-            office: office, 
+            work: work, 
             notes: notes
         }).then(() => this.props.history.push('/contactDetail'))
 
@@ -92,7 +96,7 @@ class NetworkDetail extends Component {
                 <h1>{ this.props.creatingNewNetwork ? 
                         `New Network Connection for ${this.props.currentContactTitle}`
                     :
-                        `${this.state.title} for ${this.props.currentContactTitle}`
+                        `Network Connection for ${this.props.currentContactTitle}`
                 }
                 </h1>
                 
@@ -129,11 +133,11 @@ class NetworkDetail extends Component {
 
                 <TextField
                     id="full-width"
-                    label="Office"
+                    label="Work"
                     className={classes.textField}
-                    value={this.state.office}
-                    onChange={ ( e ) => this.handleChange( 'office', e.target.value ) }
-                    helperText="Enter the office phone number of the network connection"
+                    value={this.state.work}
+                    onChange={ ( e ) => this.handleChange( 'work', e.target.value ) }
+                    helperText="Enter the work phone number of the network connection"
                     margin="normal"
                 />
 

@@ -73,7 +73,7 @@ class Contacts extends Component {
                 
                         <div key={i}>
                             <ListItem button >
-                                <IconButton component={Link} to='/contactdetail' color="primary" className={classes.button} component="span"
+                                <IconButton component={Link} to='/contactdetail' color="primary" className={classes.button} 
                                         onClick={ () => this.handleEditContactClick(contact.contactid,contact.contacttitle) }>
                                     <EditIcon />
                                 </IconButton>

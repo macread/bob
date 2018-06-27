@@ -71,7 +71,17 @@ module.exports = {
             .catch ( (err) => res.status(500).send(err))
     },
 
+        // gets one network using network id
     getNetwork: (req, res, next) => {
+        const connection = req.app.get('db');
+        connection.network_get([req.params.id])
+            .then ( (networks) => {
+                res.status(200).send(networks)} )
+            .catch ( (err) => res.status(500).send(err))
+    },
+
+        // gets all networks related to the contact id
+    getNetworks: (req, res, next) => {
         const connection = req.app.get('db');
         connection.networks_get([req.params.id])
             .then ( (networks) => {

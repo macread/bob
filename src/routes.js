@@ -14,6 +14,6 @@ export default (
         <Route path = "/settings" component = { Settings } />
         <Route path = "/resourcedetail" component = { ResourceDetail } />
         <Route path = "/contactdetail" component = { ContactDetail } />
-        <Route path = "/networkdetail" component = { NetworkDetail } />
+        <Route path = "/networkdetail/:networkid" component = { NetworkDetail } />
     </Switch>
 )
