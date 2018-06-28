@@ -20,6 +20,8 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { IconButton } from '@material-ui/core';
 
+import { Email, Item, Span, A, renderEmail } from 'react-html-email'
+
 const styles = theme => ({
     button: {
         margin: theme.spacing.unit,
@@ -167,6 +169,18 @@ class NetworkList extends Component {
     }
 
     sendEmail(idx){
+        const emailHTML = renderEmail(
+            <Email title="Hello World!">
+              <Item align="center">
+                <Span fontSize={20}>
+                  {this.state.message}
+                  This is an example email made with:
+                  <A href="https://github.com/chromakode/react-html-email">react-html-email</A>.
+                </Span>
+              </Item>
+            </Email>
+        )
+
         axios.post('/api/email',{
             email: this.state.networks[idx].email,
             subject: this.state.subject,

@@ -27,6 +27,9 @@ const {
 
 
 const app = express(); //server
+
+app.use( express.static( `${__dirname}/../build` ) );
+
 app.use(bodyParser.json());
 
 //
@@ -97,12 +100,12 @@ passport.deserializeUser((id, done) => {
 //setup authorization endpoints
 app.get('/auth', passport.authenticate('auth0'));
 app.get('/auth/callback', passport.authenticate('auth0', {
-    successRedirect: 'http://localhost:3000/#/dashboard' // change to 3005 to build
+    successRedirect: `${process.env.FRONTEND_URL}#/dashboard` // change to 3005 to build
 } ))
 
 app.get('/api/logout', (req, res) => {
     req.logOut();
-    res.redirect('http://localhost:3000'); // change to 3005 to build
+    res.redirect(`${process.env.FRONTEND_URL}`); // change to 3005 to build
 })
 
 
