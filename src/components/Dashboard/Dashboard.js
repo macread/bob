@@ -38,8 +38,8 @@ class Dashboard extends Component {
                 username: '',
                 email: '',
                 resourceData: [],
-                from: '0000-00-00',
-                to: '0000-00-00',
+                from: '1990-01-01',
+                to: '1990-01-01',
                 days: '7'
             }
     }

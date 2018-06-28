@@ -42,7 +42,6 @@ module.exports = {
             .catch ( (err) => res.status(500).send())
     },
 
-
     updateContact: (req, res, next) => {
         const connection = req.app.get('db');
         const { id, date, type, title, description, inperson} = req.body;
@@ -71,14 +70,41 @@ module.exports = {
             .catch ( (err) => res.status(500).send(err))
     },
 
+    addUnrelatedNetwork: (req, res, next) => {
+        const connection = req.app.get('db');
+        const { name, address, mobile, office, notes } = req.body;
+        connection.network_add_unrelated([name, address, mobile, office, notes])
+            .then ( (networks) => {
+                res.status(200).send(networks)} )
+            .catch ( (err) => res.status(500).send(err))
+    },
+
+    deleteNetwork: (req, res, next) => {
+        const connection = req.app.get('db');
+        connection.network_delete([req.params.id])
+            .then ( (networks) => {
+                res.status(200).send(networks)} )
+            .catch ( (err) => res.status(500).send(err))
+    },
+    
+
         // gets all networks
-        getAllNetworks: (req, res, next) => {
-            const connection = req.app.get('db');
-            connection.network_get_all()
-                .then ( (networks) => {
-                    res.status(200).send(networks)} )
-                .catch ( (err) => res.status(500).send(err))
-        },
+    getAllNetworks: (req, res, next) => {
+        const connection = req.app.get('db');
+        connection.network_get_all()
+            .then ( (networks) => {
+                res.status(200).send(networks)} )
+            .catch ( (err) => res.status(500).send(err))
+    },
+
+    updateNetwork: (req, res, next) => {
+        const connection = req.app.get('db');
+        const { id, name, address, mobile, work, email, notes } = req.body;
+        connection.network_update([name, address, mobile, work, email, notes, id ])
+            .then ( (networks) => {
+                res.status(200).send(networks)} )
+            .catch ( (err) => res.status(500).send())
+    },
 
         // gets one network using network id
     getNetwork: (req, res, next) => {
@@ -161,6 +187,46 @@ module.exports = {
             .then( (user)=> {
                 res.status(200).send(user)})
             .catch( (err)=> res.status(500).send() );
+    },
+
+    sendEmail: (req, res, next) => {
+        const { email, subject, message } = req.body;
+
+        const { 
+            NODEMAILER_USER, 
+            NODEMAILER_CLIENTID, 
+            NODEMAILER_CLIENTSECRET, 
+            NODEMAILER_REFRESHTOKEN 
+        } = process.env;
+        
+        const nodemailer = require('nodemailer');
+        const xoauth2 = require ('xoauth2');
+        
+        var transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+                type: 'OAuth2',
+                user: NODEMAILER_USER,
+                clientId: NODEMAILER_CLIENTID,
+                clientSecret: NODEMAILER_CLIENTSECRET,
+                refreshToken: NODEMAILER_REFRESHTOKEN
+            }
+        })
+        
+        var mail = {
+            from: 'Mac <devjmacread@gmail.com>',
+            to: email,
+            subject: subject,
+            text: message
+          }
+        
+        transporter.sendMail(mail, (err, data) => {
+            if (err) {
+                console.log('Email Send Error:',err)
+            } else {
+                res.json({msg: 'success'})
+            }
+        })
     },
 
 }

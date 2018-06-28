@@ -74,7 +74,7 @@ class NetworkDetail extends Component {
             mobile: mobile, 
             work: work, 
             notes: notes
-        }).then(() => this.props.history.push('/contactDetail'))
+        }).then(() => this.props.history.push(this.props.origan))
 
     }
 
@@ -165,7 +165,7 @@ class NetworkDetail extends Component {
                         )
                     }
 
-                    <Button variant="contained" className={classes.button} component={Link} to='/contactDetail'
+                    <Button variant="contained" className={classes.button} component={Link} to={this.props.origan}
                             onClick={()=>this.cancelNetwork()}>
                         Cancel
                     </Button>
