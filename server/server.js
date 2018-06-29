@@ -128,11 +128,13 @@ app.put('/api/contact', controller.updateContact);
 app.post('/api/email', controller.sendEmail)
 
 app.delete('/api/network/:id', controller.deleteNetwork)
+app.delete('/api/networkconnection/:id', controller.deleteNetworkConnection)
 app.get('/api/network/:id', controller.getNetwork);
 app.get('/api/networks', controller.getAllNetworks);
 app.get('/api/networks/:id', controller.getNetworks);
 app.put('/api/network', controller.updateNetwork);
 app.post('/api/network', controller.addUnrelatedNetwork);
+app.post('/api/networkconnection', controller.addNetworkConnection)
 app.post('/api/networks', controller.addNetwork);
 
 app.get('/api/meetings/', controller.getMeetingCount);

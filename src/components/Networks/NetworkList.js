@@ -20,7 +20,9 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { IconButton } from '@material-ui/core';
 
-// import { Email, Item, Span, A, renderEmail } from 'react-html-email'
+
+
+const mySignature = '<br><br><br><table width="470" cellspacing="0" cellpadding="0" border="0"><tr><td><table cellspacing="0" cellpadding="0" border="0"><tr>  <td style="font-size:1em;padding:0 15px 0 8px;" valign="top"><table cellspacing="0" cellpadding="0" border="0" style="line-height: 1.4;font-family:Verdana, Geneva, sans-serif;font-size:90%;color: #000001;"><tr><td><div style="font-size:1.2em;color:#000001;">Mac Read</div></td></tr><tr><td style="padding: 4px 0;"><div style="font-size:1.2em;color:#3748AC;"><span style="font-weight: 700;"></span>  <span> Sent From My Job Search Tracker</span>  <span></span></div></td></tr>  <tr><td><span style="color:#BE1157;">phone:&nbsp;</span><span><a style="color:#000001;" href="tel:8015823121">801.582.3121</a></span></td></tr>     <tr><td><span style="color:#BE1157;">email:&nbsp;</span><span><a href="mailto:james.macgregor.read@gmail.com" target="_blank" style="color: #000001;">devjmacread@gmail.com</a></span></td></tr>   </table><table class="branding" cellspacing="0" cellpadding="0" border="0"></table>'
 
 const styles = theme => ({
     button: {
@@ -33,6 +35,7 @@ const styles = theme => ({
       flex: 1,
     },
   });
+
 
 class NetworkList extends Component {
 
@@ -132,7 +135,7 @@ class NetworkList extends Component {
     };
 
     handleMailDialogClose = () => {
-        this.setState({ idx: 0, mailDialogOpen: false });
+        this.setState({ mailDialogOpen: false });
     };
 
     addNetwork(idx){
@@ -169,24 +172,16 @@ class NetworkList extends Component {
     }
 
     sendEmail(idx){
-        // const emailHTML = renderEmail(
-        //     <Email title="Hello World!">
-        //       <Item align="center">
-        //         <Span fontSize={20}>
-        //           {this.state.message}
-        //           This is an example email made with:
-        //           <A href="https://github.com/chromakode/react-html-email">react-html-email</A>.
-        //         </Span>
-        //       </Item>
-        //     </Email>
-        // )
-
-        // axios.post('/api/email',{
-        //     email: this.state.networks[idx].email,
-        //     subject: this.state.subject,
-        //     message: emailHTML
-        // }).then(this.handleMailDialogClose)
-        // this.setState({subject: '', message: ''})
+     
+        let theHtml = this.state.message + mySignature
+        
+        axios.post('/api/email',{
+            email: this.state.networks[idx].email,
+            subject: this.state.subject,
+            text: this.state.message,
+            html: theHtml
+        }).then(this.handleMailDialogClose)
+        this.setState({subject: '', message: ''})
 
     }
 
@@ -324,7 +319,7 @@ class NetworkList extends Component {
                     onClose={this.handleMailDialogClose}
                     aria-labelledby="form-dialog-title"
                     >
-                    <DialogTitle id="form-dialog-title">Network Connections</DialogTitle>
+                    <DialogTitle id="form-dialog-title">Email Network Connection</DialogTitle>
                     <DialogContent>
 
                         <TextField

@@ -79,9 +79,26 @@ module.exports = {
             .catch ( (err) => res.status(500).send(err))
     },
 
+    addNetworkConnection: (req, res, next) => {
+        const connection = req.app.get('db');
+        const { contactid, networkid } = req.body;
+        connection.network_add_connection([contactid, networkid])
+            .then ( (networks) => {
+                res.status(200).send(networks)} )
+            .catch ( (err) => res.status(500).send(err))
+    },
+
     deleteNetwork: (req, res, next) => {
         const connection = req.app.get('db');
         connection.network_delete([req.params.id])
+            .then ( (networks) => {
+                res.status(200).send(networks)} )
+            .catch ( (err) => res.status(500).send(err))
+    },
+
+    deleteNetworkConnection: (req, res, next) => {
+        const connection = req.app.get('db');
+        connection.network_delete_connection([req.params.id])
             .then ( (networks) => {
                 res.status(200).send(networks)} )
             .catch ( (err) => res.status(500).send(err))
@@ -190,7 +207,7 @@ module.exports = {
     },
 
     sendEmail: (req, res, next) => {
-        const { email, subject, message } = req.body;
+        const { email, subject, text, html } = req.body;
 
         const { 
             NODEMAILER_USER, 
@@ -217,7 +234,8 @@ module.exports = {
             from: 'Mac <devjmacread@gmail.com>',
             to: email,
             subject: subject,
-            text: message
+            text: text,
+            html: html
           }
         
         transporter.sendMail(mail, (err, data) => {

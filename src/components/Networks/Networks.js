@@ -1,20 +1,20 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
+import IconButton from '@material-ui/core/IconButton';
 import ListItemText from '@material-ui/core/ListItemText';
 import EmailIcon from '@material-ui/icons/Email';
-import EditIcon from '@material-ui/icons/Edit'
-import IconButton from '@material-ui/core/IconButton';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 const styles = theme => ({
   root: {
     width: '100%',
     maxWidth: 360,
-    backgroundColor: theme.palette.background.paper,
+  },
+  icon: {
+    margin: theme.spacing.unit * 2,
   },
 });
 
@@ -25,13 +25,13 @@ function Networks(props) {
     <div className={classes.root}>
       <List component="nav">
         <ListItem button>
-          <IconButton component={Link} to={`/networkdetail/${props.id}`} color="primary" className={classes.button}>
-            <EditIcon />
-          </IconButton>
           <ListItemText primary={props.name} />
-          <ListItemIcon>
-            <EmailIcon />
-          </ListItemIcon>
+          <IconButton color="primary" className={classes.button}>
+            <EmailIcon className={classes.icon} color="primary" />
+          </IconButton>         
+          <IconButton color="secondary" className={classes.button}>
+            <DeleteIcon className={classes.icon} color="secondary" />
+          </IconButton>
         </ListItem>
       </List>
     </div>

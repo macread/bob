@@ -23,11 +23,6 @@ export default function Progress(props){
     }]
   };
 
-
-
-  
-
-
   return (
     <div>
       <h2>{props.header}</h2>
