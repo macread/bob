@@ -28,6 +28,7 @@ import Input from '@material-ui/core/Input';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import NativeSelect from '@material-ui/core/NativeSelect';
+import Grid from '@material-ui/core/Grid';
 
 const mySignature = '<br><br><br><table width="470" cellspacing="0" cellpadding="0" border="0"><tr><td><table cellspacing="0" cellpadding="0" border="0"><tr>  <td style="font-size:1em;padding:0 15px 0 8px;" valign="top"><table cellspacing="0" cellpadding="0" border="0" style="line-height: 1.4;font-family:Verdana, Geneva, sans-serif;font-size:90%;color: #000001;"><tr><td><div style="font-size:1.2em;color:#000001;">Mac Read</div></td></tr><tr><td style="padding: 4px 0;"><div style="font-size:1.2em;color:#3748AC;"><span style="font-weight: 700;"></span>  <span> Sent From My Job Search Tracker</span>  <span></span></div></td></tr>  <tr><td><span style="color:#BE1157;">phone:&nbsp;</span><span><a style="color:#000001;" href="tel:8015823121">801.582.3121</a></span></td></tr>     <tr><td><span style="color:#BE1157;">email:&nbsp;</span><span><a href="mailto:james.macgregor.read@gmail.com" target="_blank" style="color: #000001;">devjmacread@gmail.com</a></span></td></tr>   </table><table class="branding" cellspacing="0" cellpadding="0" border="0"></table>'
 
@@ -39,7 +40,7 @@ const styles = theme => ({
     textField: {
       marginLeft: theme.spacing.unit,
       marginRight: theme.spacing.unit,
-      width: 400,
+      width: '50%',
     },
     menu: {
       width: 400,
@@ -48,8 +49,10 @@ const styles = theme => ({
         margin: theme.spacing.unit,
     },
     root: {
-        width: '100%',
-        maxWidth: 360,
+        width: '50%',
+        maxWidth: '50%',
+        marginLeft: '25%',       
+        backgroundColor: theme.palette.background.paper,
     },
     icon: {
         margin: theme.spacing.unit * 2,
@@ -224,181 +227,203 @@ class ContactDetail extends Component {
             
             <form className={classes.container} noValidate autoComplete="off">
                 <NavBar />
-                <h1>{ this.props.creatingNewContact ? 
-                        `New Contact for ${this.props.currentResourceTitle}`
-                    :
-                        `${this.state.title} for ${this.props.currentResourceTitle}`
-                }
-                </h1>
-
-                    <TextField
-                        id="date"
-                        label="date"
-                        type="date"
-                        value={ String(this.state.date) }
-                        onChange={( e ) => this.handleChange( 'date', e.target.value ) }
-                        className={classes.textField}
-                        InputLabelProps={{
-                        shrink: true,
-                        }}
-                    />
-
-                    <TextField
-                        id="select-resource"
-                        select
-                        label="Contact type"
-                        className={classes.textField}
-                        value={this.state.type}
-                        onChange={( e ) => this.handleChange( 'type', e.target.value ) }
-                        SelectProps={{
-                            native: true,
-                            MenuProps: {
-                            className: classes.menu,
-                            },
-                        }}
-                        helperText="Please select the contact type"
-                        margin="normal"
-                        >
-                        {contactType.map(option => (
-                            <option key={option} value={option}>
-                                {option}
-                            </option>
-                        ))}
-                    </TextField>
-
-                    <FormControlLabel
-                        control={
-                            <Switch
-                                checked={this.state.inperson}
-                                onChange={ ( e ) => this.handleChange( 'inperson', e.target.checked )}
-                                value="true"
-                                color="primary"
-                            />
+                <Grid container space={24}>
+                    <Grid item xs={12}>
+                        <h1>{ this.props.creatingNewContact ? 
+                                `New Contact for ${this.props.currentResourceTitle}`
+                            :
+                                `${this.state.title} for ${this.props.currentResourceTitle}`
                         }
-                        label="Meeting"
-                    />
+                        </h1>
+                    </Grid>
 
-                    <TextField
-                        id="full-width"
-                        label="Title"
-                        className={classes.textField}
-                        value={this.state.title}
-                        onChange={ ( e ) => this.handleChange( 'title', e.target.value ) }
-                        helperText="Enter the title of the Contact"
-                        margin="normal"
-                    />
+                    <Grid item xs={12}>
+                        <TextField
+                            id="date"
+                            label="date"
+                            type="date"
+                            value={ String(this.state.date) }
+                            onChange={( e ) => this.handleChange( 'date', e.target.value ) }
+                            className={classes.textField}
+                            InputLabelProps={{
+                            shrink: true,
+                            }}
+                        />
+                    </Grid>
 
-                    <TextField
-                        id="multiline-flexible"
-                        label="Description"
-                        multiline
-                        rowsMax="4"
-                        value={this.state.description}
-                        onChange={ ( e ) => this.handleChange( 'description', e.target.value ) }
-                        className={classes.textField}
-                        helperText="Enter enter the description of the contact"
-                        margin="normal"
-                    />
-                    
-                    <span className='Network'
-                    >Network</span>
-
-                    
-                    <FormControl className={classes.formControl}>                    
-                        <NativeSelect
-                            value=''
-                            onChange={e => this.addNetwork(e.target.value)}
-                            input={<Input name="days" id="days-native-helper" />}
-                        >
-                            <option value='0' key='9999'></option>
-                            {this.state.allNetworks.map( (network, i) => (
-                                <option value={network.id} key={i}>{network.name}</option>
+                    <Grid item xs={12}>
+                        <TextField
+                            id="select-resource"
+                            select
+                            label="Contact type"
+                            className={classes.textField}
+                            value={this.state.type}
+                            onChange={( e ) => this.handleChange( 'type', e.target.value ) }
+                            SelectProps={{
+                                native: true,
+                                MenuProps: {
+                                className: classes.menu,
+                                },
+                            }}
+                            helperText="Please select the contact type"
+                            margin="normal"
+                            >
+                            {contactType.map(option => (
+                                <option key={option} value={option}>
+                                    {option}
+                                </option>
                             ))}
-                        </NativeSelect>
-                        <FormHelperText>Select a network connection for this contact</FormHelperText>
-                    </FormControl>
+                        </TextField>
+                    </Grid>
 
-                    <List component="nav">
-                        {this.state.networks.map( (network, i) => (
+                    <Grid item xs={12}>
+                        <FormControlLabel
+                            control={
+                                <Switch
+                                    checked={this.state.inperson}
+                                    onChange={ ( e ) => this.handleChange( 'inperson', e.target.checked )}
+                                    value="true"
+                                    color="primary"
+                                />
+                            }
+                            label="Meeting"
+                        />
+                    </Grid>
+
+                    <Grid item xs={12}>
+                        <TextField
+                            id="full-width"
+                            label="Title"
+                            className={classes.textField}
+                            value={this.state.title}
+                            onChange={ ( e ) => this.handleChange( 'title', e.target.value ) }
+                            helperText="Enter the title of the Contact"
+                            margin="normal"
+                        />
+                    </Grid>
+
+                    <Grid item xs={12}>
+                        <TextField
+                            id="multiline-flexible"
+                            label="Description"
+                            multiline
+                            rowsMax="4"
+                            value={this.state.description}
+                            onChange={ ( e ) => this.handleChange( 'description', e.target.value ) }
+                            className={classes.textField}
+                            helperText="Enter enter the description of the contact"
+                            margin="normal"
+                        />
+                    </Grid>
+
+                    <Grid item xs={12}>
+                        <span className='Network'
+                        >Network</span>
+                    </Grid>
+
+                    <Grid item xs={12}>
+                        <FormControl className={classes.formControl}>                    
+                            <NativeSelect
+                                value=''
+                                onChange={e => this.addNetwork(e.target.value)}
+                                input={<Input name="days" id="days-native-helper" />}
+                            >
+                                <option value='0' key='9999'></option>
+                                {this.state.allNetworks.map( (network, i) => (
+                                    <option value={network.id} key={i}>{network.name}</option>
+                                ))}
+                            </NativeSelect>
+                            <FormHelperText>Select a network connection for this contact</FormHelperText>
+                        </FormControl>
+                    </Grid>
+
+                    <Grid item xs={12}>
+                    <div className={classes.root}>
+                        <List component="nav">
+                            {this.state.networks.map( (network, i) => (
+                                    
+                                    <ListItem button key={i}>
+                                    <ListItemText primary={network.name} />
+                                    <IconButton color="primary" className={classes.button} >
+                                        <EmailIcon className={classes.icon} color="primary" onClick={() => this.handleMailClickOpen(i)} />
+                                    </IconButton>         
+                                    <IconButton color="secondary" className={classes.button}>
+                                        <DeleteIcon className={classes.icon} color="secondary" onClick={ () => this.deleteNetworkConnection(i) } />
+                                    </IconButton>
+                                    </ListItem>
+                                ))
+                            }
+                        </List>
+                    </div>
+                    </Grid>
+
+                    <Grid item xs={12}>
+                            { 
+                                this.props.creatingNewContact ?
+                                        (<Button variant="contained" color="primary" component={Link} to='/resourcedetail' className={classes.button}
+                                                onClick={()=>this.addContact()}>
+                                            Save
+                                        </Button>
+                                ) : (<Button variant="contained" color="primary" component={Link} to='/resourcedetail' className={classes.button}
+                                            onClick={()=>this.updateContact()}>
+                                            Update
+                                        </Button>
+                                )
+                            }
+
                                 
-                                <ListItem button key={i}>
-                                <ListItemText primary={network.name} />
-                                <IconButton color="primary" className={classes.button} >
-                                    <EmailIcon className={classes.icon} color="primary" onClick={() => this.handleMailClickOpen(i)} />
-                                </IconButton>         
-                                <IconButton color="secondary" className={classes.button}>
-                                    <DeleteIcon className={classes.icon} color="secondary" onClick={ () => this.deleteNetworkConnection(i) } />
-                                </IconButton>
-                                </ListItem>
-                            ))
-                        }
-                     </List>
+                            <Button variant="contained" className={classes.button} component={Link} to='/resourcedetail' 
+                                    onClick={()=>this.cancelContact()}>
+                                Cancel
+                            </Button>
+                            
+                            <Button variant="contained" color="secondary" className={classes.button} component={Link} to='/resourcedetail' 
+                                    onClick={()=>this.deleteContact()}>
+                                Delete
+                            </Button>
+                    </Grid>
+                </Grid>
 
-                   { 
-                        this.props.creatingNewContact ?
-                                (<Button variant="contained" color="primary" component={Link} to='/resourcedetail' className={classes.button}
-                                        onClick={()=>this.addContact()}>
-                                    Save
-                                </Button>
-                        ) : (<Button variant="contained" color="primary" component={Link} to='/resourcedetail' className={classes.button}
-                                    onClick={()=>this.updateContact()}>
-                                    Update
-                                </Button>
-                        )
-                    }
+                            <Dialog
+                                open={this.state.mailDialogOpen}
+                                onClose={this.handleMailDialogClose}
+                                aria-labelledby="form-dialog-title"
+                                >
+                                <DialogTitle id="form-dialog-title">Email {this.state.networks[this.state.idx].name}</DialogTitle>
+                                <DialogContent>
 
-                    
-                    <Button variant="contained" className={classes.button} component={Link} to='/resourcedetail' 
-                            onClick={()=>this.cancelContact()}>
-                        Cancel
-                    </Button>
-                    
-                    <Button variant="contained" color="secondary" className={classes.button} component={Link} to='/resourcedetail' 
-                            onClick={()=>this.deleteContact()}>
-                        Delete
-                    </Button>
+                                    <TextField
+                                        autoFocus
+                                        value={this.state.subject}
+                                        margin="dense"
+                                        id="subject"
+                                        label="Subject"
+                                        type="text"
+                                        fullWidth
+                                        onChange={ ( e ) => this.handleChange('subject', e.target.value)}
+                                    />
 
+                                    <TextField
+                                        value={this.state.message}
+                                        margin="dense"
+                                        id="message"
+                                        label="Message"
+                                        type="text"
+                                        fullWidth
+                                        onChange={ ( e ) => this.handleChange('message', e.target.value)}
+                                    />
 
-                <Dialog
-                    open={this.state.mailDialogOpen}
-                    onClose={this.handleMailDialogClose}
-                    aria-labelledby="form-dialog-title"
-                    >
-                    <DialogTitle id="form-dialog-title">Email {this.state.networks[this.state.idx].name}</DialogTitle>
-                    <DialogContent>
+                                </DialogContent>
 
-                        <TextField
-                            autoFocus
-                            value={this.state.subject}
-                            margin="dense"
-                            id="subject"
-                            label="Subject"
-                            type="text"
-                            fullWidth
-                            onChange={ ( e ) => this.handleChange('subject', e.target.value)}
-                        />
-
-                        <TextField
-                            value={this.state.message}
-                            margin="dense"
-                            id="message"
-                            label="Message"
-                            type="text"
-                            fullWidth
-                            onChange={ ( e ) => this.handleChange('message', e.target.value)}
-                        />
-
-                    </DialogContent>
-
-                    <DialogActions>
-                        <Button onClick={this.handleMailDialogClose} color="secondary">
-                            Cancel
-                        </Button>
-                        <Button onClick={()=>this.sendEmail(this.state.idx)} color="primary">
-                            Send
-                        </Button>
-                    </DialogActions>
-                </Dialog>
+                                <DialogActions>
+                                    <Button onClick={this.handleMailDialogClose} color="secondary">
+                                        Cancel
+                                    </Button>
+                                    <Button onClick={()=>this.sendEmail(this.state.idx)} color="primary">
+                                        Send
+                                    </Button>
+                                </DialogActions>
+                            </Dialog>
             </form>
         )
     }

@@ -10,6 +10,7 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
 
 
 const styles = theme => ({
@@ -20,7 +21,7 @@ const styles = theme => ({
     textField: {
       marginLeft: theme.spacing.unit,
       marginRight: theme.spacing.unit,
-      width: 400,
+      width: '50%',
     },
     menu: {
       width: 400,
@@ -123,112 +124,128 @@ class ResourceDetail extends Component {
         const { classes } = this.props;
 
         return (
-                <form className={classes.container} noValidate autoComplete="off">
+            <form className={classes.container} noValidate autoComplete="off">
                 <NavBar />
-                <h1>{ this.props.creatingNewResource ? 
-                        "New Resource"
-                    :
-                        this.props.resource[0].resourcetitle 
-                }
-                </h1>
+                <Grid container spacing={24}>
+                    <Grid item xs={12}>       
+                        <h1>{ this.props.creatingNewResource ? 
+                            "New Resource"
+                        :
+                            this.props.resource[0].resourcetitle 
+                        }
+                        </h1>
+                    </Grid>
 
-                    <TextField
-                        id="date"
-                        label="ResouceDate"
-                        className={classes.textField}
-                        type="date"
-                        value={ String(this.state.date) }
-                        onChange={( e ) => this.handleChange( 'date', e.target.value ) }
-                        InputLabelProps={{
-                        shrink: true,
-                        }}
-                    />
+                    <Grid item xs={12}>    
+                        <TextField
+                            id="date"
+                            label="ResouceDate"
+                            className={classes.textField}
+                            type="date"
+                            value={ String(this.state.date) }
+                            onChange={( e ) => this.handleChange( 'date', e.target.value ) }
+                            InputLabelProps={{
+                            shrink: true,
+                            }}
+                        />
+                    </Grid>
 
-                    <TextField
-                        id="select-resource"
-                        select
-                        label="Resource type"
-                        className={classes.textField}
-                        value={this.state.type}
-                        onChange={( e ) => this.handleChange( 'type', e.target.value ) }
-                        SelectProps={{
-                            native: true,
-                            MenuProps: {
-                            className: classes.menu,
-                            },
-                        }}
-                        helperText="Please select the resource type"
-                        margin="normal"
-                        >
-                        {resourceType.map(option => (
-                            <option key={option} value={option}>
-                                {option}
-                            </option>
-                        ))}
-                    </TextField>
+                    <Grid item xs={12}>
+                        <TextField
+                            id="select-resource"
+                            select
+                            label="Resource type"
+                            className={classes.textField}
+                            value={this.state.type}
+                            onChange={( e ) => this.handleChange( 'type', e.target.value ) }
+                            SelectProps={{
+                                native: true,
+                                MenuProps: {
+                                className: classes.menu,
+                                },
+                            }}
+                            helperText="Please select the resource type"
+                            margin="normal"
+                            >
+                            {resourceType.map(option => (
+                                <option key={option} value={option}>
+                                    {option}
+                                </option>
+                            ))}
+                        </TextField>
+                    </Grid>
 
-                    <TextField
-                        id="full-width"
-                        label="Title"
-                        className={classes.textField}
-                        value={this.state.title}
-                        onChange={ ( e ) => this.handleChange( 'title', e.target.value ) }
-                        helperText="Enter the title of the resource"
-                        margin="normal"
-                    />
+                    <Grid item xs={12}>
+                        <TextField
+                            id="full-width"
+                            label="Title"
+                            className={classes.textField}
+                            value={this.state.title}
+                            onChange={ ( e ) => this.handleChange( 'title', e.target.value ) }
+                            helperText="Enter the title of the resource"
+                            margin="normal"
+                        />
+                    </Grid>
+        
+                    <Grid item xs={12}>
+                        <TextField
+                            id="multiline-flexible"
+                            label="Description"
+                            multiline
+                            rowsMax="4"
+                            value={this.state.description}
+                            onChange={ ( e ) => this.handleChange( 'description', e.target.value ) }
+                            className={classes.textField}
+                            helperText="Enter enter the description of the resource"
+                            margin="normal"
+                        />
+                    </Grid>
 
-                    <TextField
-                        id="multiline-flexible"
-                        label="Description"
-                        multiline
-                        rowsMax="4"
-                        value={this.state.description}
-                        onChange={ ( e ) => this.handleChange( 'description', e.target.value ) }
-                        className={classes.textField}
-                        helperText="Enter enter the description of the resource"
-                        margin="normal"
-                    />
+                    <Grid item xs={12}>
+                        <TextField
+                            id="full-width"
+                            label="URL"
+                            className={classes.textField}
+                            value={this.state.url}
+                            onChange={ ( e ) => this.handleChange( 'url', e.target.value ) }
+                            helperText="Enter the URL of the resource"
+                            margin="normal"
+                        />
+                    </Grid>
 
-                    <TextField
-                        id="full-width"
-                        label="URL"
-                        className={classes.textField}
-                        value={this.state.url}
-                        onChange={ ( e ) => this.handleChange( 'url', e.target.value ) }
-                        helperText="Enter the URL of the resource"
-                        margin="normal"
-                    />
+                    <Grid item xs={12}>
+                        <Contact />
+                    </Grid>
                     
-                  
-                    <Contact />
+                    <Grid item xs={12}>
 
+                        { 
+                            this.props.creatingNewResource ?
+                                (<Button component={Link} to="/dashboard" variant="contained" color="primary" className={classes.button}
+                                            onClick={()=>this.addResource()}>
+                                        Save
+                                    </Button>
+                            ) : (<Button component={Link} to="/dashboard" variant="contained" color="primary" className={classes.button}
+                                        onClick={()=>this.updateResource()}>
+                                        Update
+                                    </Button>
+                            )
+                        }
 
-                    { 
-                        this.props.creatingNewResource ?
-                            (<Button component={Link} to="/dashboard" variant="contained" color="primary" className={classes.button}
-                                        onClick={()=>this.addResource()}>
-                                    Save
-                                </Button>
-                        ) : (<Button component={Link} to="/dashboard" variant="contained" color="primary" className={classes.button}
-                                    onClick={()=>this.updateResource()}>
-                                    Update
-                                </Button>
-                        )
-                    }
+                            <Button component={Link} to="/dashboard" variant="contained" className={classes.button}
+                                    onClick={()=>this.cancelResource()}>
+                                Cancel
+                            </Button>
+                        
 
-                        <Button component={Link} to="/dashboard" variant="contained" className={classes.button}
-                                onClick={()=>this.cancelResource()}>
-                            Cancel
-                        </Button>
-                    
+                            <Button component={Link} to="/dashboard" variant="contained" color="secondary" className={classes.button}
+                                    onClick={()=>this.deleteResource()}>
+                                Delete
+                            </Button>
 
-                        <Button component={Link} to="/dashboard" variant="contained" color="secondary" className={classes.button}
-                                onClick={()=>this.deleteResource()}>
-                            Delete
-                        </Button>
-
-
-                </form>
+                    </Grid>
+                </Grid>
+            </form>
         )
     }
 }

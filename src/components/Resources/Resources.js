@@ -19,8 +19,10 @@ import { Link } from 'react-router-dom';
 
 const styles = theme => ({
   root: {
-    width: '100%',
-    maxWidth: 360,
+    width: '50%',
+    maxWidth: '50%',
+    marginLeft: '25%',
+
     backgroundColor: theme.palette.background.paper,
   },
   nested: {
@@ -59,7 +61,7 @@ class Resources extends Component {
         <List
           component="nav"
           subheader={<ListSubheader component="div">Resources</ListSubheader>} >
-
+        
             <IconButton component={Link} to="/resourcedetail" color="primary" className={classes.button} onClick={ () => this.handleAddResourceClick(true) }>
                 <AddIcon />
             </IconButton>

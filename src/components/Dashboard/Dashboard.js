@@ -13,6 +13,7 @@ import Input from '@material-ui/core/Input';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import NativeSelect from '@material-ui/core/NativeSelect';
+import Grid from '@material-ui/core/Grid'
 
 const styles = theme => ({
     root: {
@@ -26,6 +27,9 @@ const styles = theme => ({
     selectEmpty: {
       marginTop: theme.spacing.unit * 2,
     },
+    center: {
+        justify: 'center'
+    }
   });
 
 class Dashboard extends Component {
@@ -125,47 +129,56 @@ class Dashboard extends Component {
         if (meetingsTogo<0) { meetingsTogo = 0 }
 
         return (
-            <div className='Dashboard'>
+            <div className={classes.root}>
                 <NavBar />
 
-                <FormControl className={classes.formControl}>
-                
-                <NativeSelect
-                    value={this.state.days}
-                    onChange={e => this.handleChange(e.target.value)}
-                    input={<Input name="days" id="days-native-helper" />}
-                >
-                    <option value={7}>Last 7 days</option>
-                    <option value={14}>Last 14 days</option>
-                    <option value={30}>Last 30 days</option>
-                    <option value={45}>Last 45 days</option>
-                    <option value={60}>Last 60 days</option>
-                    <option value={120}>Last 120 days</option>
-                </NativeSelect>
-                <FormHelperText>Select the number of days to show your progress towards your goals</FormHelperText>
-                </FormControl>
-                
-                <Progress 
-                    header='Resources'
-                    progress={this.props.resourceCount}
-                    togo={resourcesTogo}
-                />
+                <Grid container spacing={24}>
+                    <Grid item xs={12}>
+                        <FormControl className={classes.formControl}>
+                        
+                        <NativeSelect
+                            value={this.state.days}
+                            onChange={e => this.handleChange(e.target.value)}
+                            input={<Input name="days" id="days-native-helper" />}
+                        >
+                            <option value={7}>Last 7 days</option>
+                            <option value={14}>Last 14 days</option>
+                            <option value={30}>Last 30 days</option>
+                            <option value={45}>Last 45 days</option>
+                            <option value={60}>Last 60 days</option>
+                            <option value={120}>Last 120 days</option>
+                        </NativeSelect>
+                        <FormHelperText>Select the number of days to show your progress towards your goals</FormHelperText>
+                        </FormControl>
+                    </Grid>
+                    
+                    <Grid xs={8} sm={4}>
+                        <Progress 
+                            header='Resources'
+                            progress={this.props.resourceCount}
+                            togo={resourcesTogo}
+                        />
+                    </Grid>
 
-                <Progress 
-                    header='Contacts'
-                    progress={this.props.contactCount}
-                    togo={contactsTogo}
-                />
+                    <Grid xs={8} sm={4}>
+                        <Progress 
+                            header='Contacts'
+                            progress={this.props.contactCount}
+                            togo={contactsTogo}
+                        />
+                    </Grid>
 
-                <Progress 
-                    header='Meetings'
-                    progress={this.props.meetingCount}
-                    togo={meetingsTogo}
-                />
+                    <Grid item xs={8} sm={4}>
+                        <Progress 
+                            header='Meetings'
+                            progress={this.props.meetingCount}
+                            togo={meetingsTogo}
+                        />
+                    </Grid>
 
-                
+                    <Resources resourceData={this.state.resourceData}/>
 
-                <Resources resourceData={this.state.resourceData}/>
+                </Grid>
             </div> 
         )
     }

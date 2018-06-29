@@ -2,7 +2,6 @@ import React from 'react';
 import {Doughnut} from 'react-chartjs-2';
 
 
-
 export default function Progress(props){
   
   const data = {
@@ -26,7 +25,7 @@ export default function Progress(props){
   return (
     <div>
       <h2>{props.header}</h2>
-      <Doughnut data={data} />
+        <Doughnut data={data} />
     </div>
   );
 };

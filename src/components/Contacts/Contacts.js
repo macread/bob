@@ -17,10 +17,18 @@ import IconButton from '@material-ui/core/IconButton';
 
 const styles = theme => ({
     root: {
-      width: '100%',
-      maxWidth: 360,
+        width: '50%',
+        maxWidth: '50%',
+        marginLeft: '25%',       
       backgroundColor: theme.palette.background.paper,
     },
+
+    container: {
+        display: 'flex',
+        flexWrap: 'wrap',
+        justify: 'center',
+      },
+      
     nested: {
       paddingLeft: theme.spacing.unit * 4,
     },
@@ -59,34 +67,35 @@ class Contacts extends Component {
         const { classes } = this.props;
       
         return (
-            <List
-            component="nav"
-            subheader={<ListSubheader component="div">Contacts</ListSubheader>} >
-
-             
-            <IconButton component={Link} to='/contactdetail' color="primary" className={classes.button} onClick={ () => this.handleAddContactClick(true) }>
-                <AddIcon />
-            </IconButton>
-
-            { 
-                this.props.resource.map( (contact, i) => ( 
-                
-                        <div key={i}>
-                            <ListItem button >
-                                <IconButton component={Link} to='/contactdetail' color="primary" className={classes.button} 
-                                        onClick={ () => this.handleEditContactClick(contact.contactid,contact.contacttitle) }>
-                                    <EditIcon />
-                                </IconButton>
-                      
-                                <ListItemText inset primary={contact.contacttitle} />
-                            </ListItem>
-
-                        </div>
+            
+            <div className={classes.root}>
+                <List
+                    subheader={<ListSubheader component="div">Contacts</ListSubheader>} >
                     
+                    <IconButton component={Link} to='/contactdetail' color="primary" className={classes.button} onClick={ () => this.handleAddContactClick(true) }>
+                        <AddIcon />
+                    </IconButton>
 
-                
-            ))}
-            </List>
+
+                    { 
+                        this.props.resource.map( (contact, i) => ( 
+                        
+                                <div key={i}>
+                                    <ListItem button >
+                                        <IconButton component={Link} to='/contactdetail' color="primary" className={classes.button} 
+                                                onClick={ () => this.handleEditContactClick(contact.contactid,contact.contacttitle) }>
+                                            <EditIcon />
+                                        </IconButton>
+                            
+                                        <ListItemText inset primary={contact.contacttitle} />
+                                    </ListItem>
+                                </div>
+                            
+
+                        
+                    ))}
+                </List>
+            </div> 
         )
     }
 }
