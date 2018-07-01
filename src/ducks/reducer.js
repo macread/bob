@@ -18,7 +18,11 @@ const initialState = {
     currentResourceID: 0,
     currentResourceTitle: '',
     currentContactID: 0,
-    currentContactTitle: ''
+    currentContactTitle: '',
+    openSettings: false,
+    from: '1990-01-01',
+    to: '1990-01-01',
+    weeks: 1
 }
 
 const RESET_USER_ID = 'RESET_USER_ID';
@@ -40,6 +44,7 @@ const SET_CURRENT_CONTACT = 'SET_CURRENT_CONTACT';
 const SET_RESOURCE_COUNT = 'SET_RESOURCE_COUNT';
 const SET_CONTACT_COUNT = 'SET_CONTACT_COUNT';
 const SET_MEETING_COUNT = 'SET_MEETING_COUNT';
+const SET_SEARCH_RANGE = 'SET_SEARCH_RANGE';
 
 
 
@@ -48,7 +53,11 @@ export default function reducer(state = initialState, action ) {
     switch (action.type){
 
         case UPDATE_USER_SETTNGS:
-            return Object.assign({}, state, action.payload)
+            let openUserSettings = {openSettings: false};
+            if (action.payload.email==='' && action.payload.userid!==0) {
+                openUserSettings = {openSettings: true}
+            }
+            return Object.assign({}, state, action.payload, openUserSettings)
 
         case RESET_USER_ID:
 
@@ -161,6 +170,11 @@ export default function reducer(state = initialState, action ) {
         case SET_MEETING_COUNT:
         
             return Object.assign({}, state, {meetingCount: action.payload})
+
+        case SET_SEARCH_RANGE:
+        
+            return Object.assign({}, state, {from: action.payload.from, to: action.payload.to, weeks: action.payload.weeks})
+
 
         default:
             return state;
@@ -296,5 +310,12 @@ export function setMeetingCount( count ) {
     return {
         type: SET_MEETING_COUNT,
         payload: count
+    }
+}
+
+export function setSearchRange(from, to, weeks) {
+    return {
+        type: SET_SEARCH_RANGE,
+        payload: {from: from, to: to, weeks: weeks}
     }
 }

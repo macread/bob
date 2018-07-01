@@ -4,7 +4,7 @@ import NavBar from './../NavBar/NavBar';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { creatingResource, setCurrentResource } from '../../ducks/reducer'
-import Contact from '../Contacts/Contacts'
+import Contacts from '../Contacts/Contacts'
 
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
@@ -212,23 +212,26 @@ class ResourceDetail extends Component {
                             margin="normal"
                         />
                     </Grid>
-
-                    <Grid item xs={12}>
-                        <Contact />
-                    </Grid>
                     
+                    {this.props.creatingNewResource ? null : (
+                        <Grid item xs={12}>
+                            <Contacts />
+                        </Grid>)
+                    }
+
                     <Grid item xs={12}>
 
-                        { 
-                            this.props.creatingNewResource ?
+                        {this.props.creatingNewResource ?
                                 (<Button component={Link} to="/dashboard" variant="contained" color="primary" className={classes.button}
                                             onClick={()=>this.addResource()}>
                                         Save
-                                    </Button>
-                            ) : (<Button component={Link} to="/dashboard" variant="contained" color="primary" className={classes.button}
+                                </Button>
+                            ) : (
+              
+                                <Button component={Link} to="/dashboard" variant="contained" color="primary" className={classes.button}
                                         onClick={()=>this.updateResource()}>
                                         Update
-                                    </Button>
+                                </Button>
                             )
                         }
 

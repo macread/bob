@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { connect } from 'react-redux';
-import { updateUserSettings, prepResources, setResourceCount, setContactCount, setMeetingCount } from '../../ducks/reducer';
+import { updateUserSettings, prepResources, setResourceCount, setContactCount, setMeetingCount, setSearchRange } from '../../ducks/reducer';
 
 import NavBar from './../NavBar/NavBar';
 import Resources from './../Resources/Resources';
@@ -14,6 +14,7 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import NativeSelect from '@material-ui/core/NativeSelect';
 import Grid from '@material-ui/core/Grid'
+
 
 const styles = theme => ({
     root: {
@@ -42,13 +43,14 @@ class Dashboard extends Component {
                 username: '',
                 email: '',
                 resourceData: [],
-                from: '1990-01-01',
-                to: '1990-01-01',
-                days: '7'
+                days: 7,
+                weeks: 1
             }
     }
 
     componentDidMount() {
+
+        this.updateDateRange(this.props.weeks)
         if (this.state.userid === 0){
             this.getUserData();
         }
@@ -56,76 +58,71 @@ class Dashboard extends Component {
     }
 
     getUserData() {
- 
-    axios.get('/api/resources/count', {params: {from: this.state.from, to: this.state.to}})
-            .then( results => {
-                this.props.setResourceCount(parseInt(results.data.count,10))
-        }).then(
-            axios.get('/api/contacts/', {params: {from: this.state.from, to: this.state.to}})
-                .then( results => {
-                    this.props.setContactCount(parseInt(results.data.count,10))
-            })).then(
-                axios.get('/api/meetings/', {params: {from: this.state.from, to: this.state.to}})
-                    .then( results => {
-                        this.props.setMeetingCount(parseInt(results.data.count,10))
-                })).then(
-                    axios.get('/api/user/').then( results => {
-                        let { id, avatar, username, email, resources, contacts, meetings } = results.data[0];
-            
-                        this.setState({ 
-                            userid: id,
-                            avatar: avatar,
-                            username: username,
-                            email: email
-                        });
-                        
-                        this.props.updateUserSettings({
-                            userid: id,
-                            avatar,
-                            username,
-                            email,
-                            resources,
-                            contacts,
-                            meetings
-                        });
-                }).then(axios.get('/api/resources').then( results => {
-                    this.props.prepResources(results.data)
-                        }))
-            
-            );
+        axios.get('/api/user/').then( results => {
+            let { id, avatar, username, email, resources, contacts, meetings } = results.data[0];
+
+            this.setState({ 
+                userid: id,
+                avatar: avatar,
+                username: username,
+                email: email,
+            });
+
+            this.props.updateUserSettings({
+                userid: id,
+                avatar,
+                username,
+                email,
+                resources,
+                contacts,
+                meetings
+            });
+        }).then(axios.get('/api/resources').then( results => {
+            this.props.prepResources(results.data)
+                }))
+                
     }
 
-    updateDateRange(days){
+    updateDateRange(weeks){
         var d = new Date();
         var to = `${d.getFullYear()}-${('00'+(d.getMonth()+1)).slice(-2)}-${d.getDate()}`
 
-        d.setDate(d.getDate()-days);
+        d.setDate(d.getDate()-(weeks*7));
         var from = `${d.getFullYear()}-${('00'+(d.getMonth()+1)).slice(-2)}-${d.getDate()}`
 
-        this.setState({
-            from: from,
-            to: to
-        })
+        axios.get('/api/resources/count', {params: {from: from, to: to}})
+            .then( results => {
+                this.props.setResourceCount(parseInt(results.data.count,10))
+            }).then(
+                axios.get('/api/contacts/', {params: {from: from, to: to}})
+                    .then( results => {
+                        this.props.setContactCount(parseInt(results.data.count,10))
+                })).then(
+                    axios.get('/api/meetings/', {params: {from: from, to: to}})
+                      .then( results => {
+                           this.props.setMeetingCount(parseInt(results.data.count,10))
+                    })).then(this.props.setSearchRange(from, to, weeks))
+       
     }
 
-    handleChange(days){
-        this.setState({days: days})
-        this.updateDateRange(days)
+    handleChange(weeks){
+        this.updateDateRange(weeks)
         this.getUserData()
     }
 
     render() {
+
         const { classes } = this.props;
 
         let { resources, resourceCount, contacts, contactCount, meetings, meetingCount } = this.props;
 
-        let resourcesTogo = (resources * this.state.days) - resourceCount;
+        let resourcesTogo = (resources * this.props.weeks) - resourceCount;
         if (resourcesTogo<0) { resourcesTogo = 0 }
 
-        let contactsTogo = (contacts * this.state.days) - contactCount;
+        let contactsTogo = (contacts * this.props.weeks) - contactCount;
         if (contactsTogo<0) { contactsTogo = 0 }
 
-        let meetingsTogo = (meetings * this.state.days) - meetingCount;
+        let meetingsTogo = (meetings * this.props.weeks) - meetingCount;
         if (meetingsTogo<0) { meetingsTogo = 0 }
 
         return (
@@ -137,18 +134,17 @@ class Dashboard extends Component {
                         <FormControl className={classes.formControl}>
                         
                         <NativeSelect
-                            value={this.state.days}
+                            value={this.props.weeks}
                             onChange={e => this.handleChange(e.target.value)}
-                            input={<Input name="days" id="days-native-helper" />}
+                            input={<Input name="weeks" id="weeks-native-helper" />}
                         >
-                            <option value={7}>Last 7 days</option>
-                            <option value={14}>Last 14 days</option>
-                            <option value={30}>Last 30 days</option>
-                            <option value={45}>Last 45 days</option>
-                            <option value={60}>Last 60 days</option>
-                            <option value={120}>Last 120 days</option>
+                            <option value={1}>Past week</option>
+                            <option value={2}>Last 2 weeks</option>
+                            <option value={4}>Last 4 weeks</option>
+                            <option value={8}>Last 2 months</option>
+                            <option value={24}>Last 6 months</option>
                         </NativeSelect>
-                        <FormHelperText>Select the number of days to show your progress towards your goals</FormHelperText>
+                        <FormHelperText>Select the number of weeks to show your progress towards your goals</FormHelperText>
                         </FormControl>
                     </Grid>
                     
@@ -168,14 +164,14 @@ class Dashboard extends Component {
                         />
                     </Grid>
 
-                    <Grid item xs={8} sm={4}>
+                    <Grid xs={8} sm={4}>
                         <Progress 
                             header='Meetings'
                             progress={this.props.meetingCount}
                             togo={meetingsTogo}
                         />
                     </Grid>
-
+                    
                     <Resources resourceData={this.state.resourceData}/>
 
                 </Grid>
@@ -188,7 +184,7 @@ Dashboard.propTypes = {
     classes: PropTypes.object.isRequired,
   };
 
-function MapStateToProps(state){
+function mapStateToProps(state){
     return({
         userid: state.userid,
         username: state.username,
@@ -200,7 +196,10 @@ function MapStateToProps(state){
         contacts: state.contacts,
         contactCount: state.contactCount,
         meetings: state.meetings,
-        meetingCount: state.meetingCount
+        meetingCount: state.meetingCount,
+        from: state.from,
+        to: state.to,
+        weeks: state.weeks
     });
 }
-export default withStyles(styles)(connect(MapStateToProps, { updateUserSettings, prepResources, setResourceCount, setContactCount, setMeetingCount })(Dashboard));
+export default withStyles(styles)(connect(mapStateToProps, { updateUserSettings, prepResources, setResourceCount, setContactCount, setMeetingCount, setSearchRange })(Dashboard));

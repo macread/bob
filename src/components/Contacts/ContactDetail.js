@@ -177,11 +177,9 @@ class ContactDetail extends Component {
                 inperson: inperson
             })
         }).then(axios.get(`/api/networks/${contactid}`).then( results => {
-                this.setState({networks: results.data})}))
+                (results.data.length>0 ? this.setState({networks: results.data}) : this.setState({networks: this.state.networks})) }))
             .then(axios.get('/api/networks/').then( results => {
-                this.setState({
-                    allNetworks: results.data
-                })}))
+                this.setState({allNetworks: results.data})}))
 
     }
 
@@ -384,46 +382,46 @@ class ContactDetail extends Component {
                     </Grid>
                 </Grid>
 
-                            <Dialog
-                                open={this.state.mailDialogOpen}
-                                onClose={this.handleMailDialogClose}
-                                aria-labelledby="form-dialog-title"
-                                >
-                                <DialogTitle id="form-dialog-title">Email {this.state.networks[this.state.idx].name}</DialogTitle>
-                                <DialogContent>
+                <Dialog
+                    open={this.state.mailDialogOpen}
+                    onClose={this.handleMailDialogClose}
+                    aria-labelledby="form-dialog-title"
+                    >
+                    <DialogTitle id="form-dialog-title">Email {this.state.networks[this.state.idx].name}</DialogTitle>
+                    <DialogContent>
 
-                                    <TextField
-                                        autoFocus
-                                        value={this.state.subject}
-                                        margin="dense"
-                                        id="subject"
-                                        label="Subject"
-                                        type="text"
-                                        fullWidth
-                                        onChange={ ( e ) => this.handleChange('subject', e.target.value)}
-                                    />
+                        <TextField
+                            autoFocus
+                            value={this.state.subject}
+                            margin="dense"
+                            id="subject"
+                            label="Subject"
+                            type="text"
+                            fullWidth
+                            onChange={ ( e ) => this.handleChange('subject', e.target.value)}
+                        />
 
-                                    <TextField
-                                        value={this.state.message}
-                                        margin="dense"
-                                        id="message"
-                                        label="Message"
-                                        type="text"
-                                        fullWidth
-                                        onChange={ ( e ) => this.handleChange('message', e.target.value)}
-                                    />
+                        <TextField
+                            value={this.state.message}
+                            margin="dense"
+                            id="message"
+                            label="Message"
+                            type="text"
+                            fullWidth
+                            onChange={ ( e ) => this.handleChange('message', e.target.value)}
+                        />
 
-                                </DialogContent>
+                    </DialogContent>
 
-                                <DialogActions>
-                                    <Button onClick={this.handleMailDialogClose} color="secondary">
-                                        Cancel
-                                    </Button>
-                                    <Button onClick={()=>this.sendEmail(this.state.idx)} color="primary">
-                                        Send
-                                    </Button>
-                                </DialogActions>
-                            </Dialog>
+                    <DialogActions>
+                        <Button onClick={this.handleMailDialogClose} color="secondary">
+                            Cancel
+                        </Button>
+                        <Button onClick={()=>this.sendEmail(this.state.idx)} color="primary">
+                            Send
+                        </Button>
+                    </DialogActions>
+                </Dialog>
             </form>
         )
     }

@@ -14,4 +14,4 @@ FROM resources
     JOIN users ON resources.userid = users.id
     LEFT JOIN contacts ON contacts.resourceid = resources.id
 WHERE users.id = $1
-ORDER BY resources.date, resources.type, resources.title, contacts.date, contacts.type, contacts.title
+ORDER BY resources.date desc, resources.type, resources.title, contacts.date, contacts.type, contacts.title

@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { resetUserID } from '../../ducks/reducer'
 
-import { updateEmail, increment, decrement, settingsDoneEditing } from '../../ducks/reducer';
+import { updateEmail, increment, decrement, settingsDoneEditing, updateUserSettings } from '../../ducks/reducer';
 
 
 import PropTypes from 'prop-types';
@@ -28,22 +28,27 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import AddIcon from '@material-ui/icons/Add';
 import SubtractIcon from '@material-ui/icons/Remove';
 import Divider from '@material-ui/core/Divider';
+import Grid from '@material-ui/core/Grid';
 
-const styles = {
+const styles = theme => ({
   root: {
     flexGrow: 1,
+    // display: 'flex',
+    // direction: 'row',
+    // justify: 'center',
+    // alignItems: 'center',
   },
   flex: {
     flex: 1,
   },
   avatar: {
-    margin: 10,
+    margin: 0,
   },
-  bigAvatar: {
-    width: 60,
-    height: 60,
-  },
-};
+  button: {
+      margin: theme.spacing.unit,
+    },
+
+});
 
 
 class MenuAppBar extends React.Component {
@@ -96,13 +101,21 @@ class MenuAppBar extends React.Component {
   }
 
   updateUserSettings(){
-    let {  email, resources, contacts, meetings } = this.props;
+    let {  userid, email, resources, contacts, meetings } = this.props;
     axios.post('/api/user',
     {email: email,
         resources: resources,
         contacts: contacts,
         meetings: meetings
-    }).then(this.props.settingsDoneEditing())
+    })
+    .then(this.props.updateUserSettings({
+      userid,
+      email,
+      resources,
+      contacts,
+      meetings
+  }))
+    .then(this.props.settingsDoneEditing())
     .then(this.handleDialogClose)
 }
 
@@ -123,7 +136,7 @@ class MenuAppBar extends React.Component {
               <div>
               
                 <Chip
-                  avatar={ <Avatar alt={this.props.username} src={this.props.avatar} className={classes.avatar} />}
+                  avatar={ <Avatar alt={this.props.username} src={this.props.avatar} className={classes.avatar}  />}
                   label={this.props.username}
                   onClick={this.handleMenu}
                   className={classes.chip}
@@ -157,21 +170,28 @@ class MenuAppBar extends React.Component {
         </AppBar>
 
         {this.props.match.path==='/' ?
-            (<div>
-              <Button href={process.env.REACT_APP_LOGIN} variant="contained" color="secondary" className={classes.button}>
-                Login
-              </Button>
-              <p></p>
-              <Button color="primary" className={classes.button}>
-                New User
-              </Button>
-            </div> )
+            (
+              <div> 
+              <br />
+              <Grid container space={24}>
+                <Grid item xs={12}>
+                  <Button href={process.env.REACT_APP_LOGIN} variant="contained" color="secondary" className={classes.button}>
+                    Login
+                  </Button>
+                </Grid>
+                <Grid ited xs={12}>
+                  <Button color="primary" className={classes.button}>
+                    New User
+                  </Button>
+                </Grid>
+              </Grid>
+              </div>)
           :
             ( null)
         }
 
         <Dialog
-          open={this.state.open}
+          open={(this.state.open || this.props.openSettings)}
           onClose={this.handleDialogClose}
           aria-labelledby="form-dialog-title"
         >
@@ -180,7 +200,7 @@ class MenuAppBar extends React.Component {
             <DialogContentText>
               Please enter your email address. Next, select your goal for the 
               number of resources, contacts and meetings you would like to 
-              accomplish each day during your job search.
+              accomplish each week during your job search.
             </DialogContentText>
 
             <TextField
@@ -196,51 +216,50 @@ class MenuAppBar extends React.Component {
 
 
             <Divider />
-            <DialogContentText>
-                <Typography variant="display1">
-                  {this.props.resources}
+            
+            <DialogContentText >
+                <Typography variant="display1" align='center'>
+                  Resources: {this.props.resources}
+                  <Button variant="fab" mini color="primary" aria-label="add" className={classes.button}
+                      onClick={() => this.increment('resource')}>
+                    <AddIcon />
+                  </Button>
+                  <Button variant="fab" mini color="secondary" aria-label="add" className={classes.button}
+                      onClick={() => this.decrement('resource')}>
+                    <SubtractIcon />
+                  </Button>
                 </Typography>
             </DialogContentText>
-            <Button variant="fab" mini color="primary" aria-label="add" className={classes.button}
-                onClick={() => this.increment('resource')}>
-              <AddIcon />
-            </Button>
-            <Button variant="fab" mini color="secondary" aria-label="add" className={classes.button}
-                onClick={() => this.decrement('resource')}>
-              <SubtractIcon />
-            </Button>
+            
+            <Divider />
+            <DialogContentText>
+                <Typography variant="display1" align='center'>
+                  Contacts: {this.props.contacts}
+                  <Button variant="fab" mini color="primary" aria-label="add" className={classes.button}
+                      onClick={() => this.increment('contact')}>
+                    <AddIcon />
+                  </Button>
+                  <Button variant="fab" mini color="secondary" aria-label="add" className={classes.button}
+                      onClick={() => this.decrement('contact')}>
+                    <SubtractIcon />
+                  </Button>
+                </Typography>
+            </DialogContentText>
 
             <Divider />
             <DialogContentText>
-                <Typography variant="display1">
-                  {this.props.contacts}
+                <Typography variant="display1" align='center'>
+                  Meetings: {this.props.meetings}
+                  <Button variant="fab" mini color="primary" aria-label="add" className={classes.button}
+                  onClick={() => this.increment('meeting')}>
+                  <AddIcon />
+                  </Button>
+                  <Button variant="fab" mini color="secondary" aria-label="add" className={classes.button}
+                      onClick={() => this.decrement('meeting')}>
+                    <SubtractIcon />
+                  </Button>
                 </Typography>
             </DialogContentText>
-            <Button variant="fab" mini color="primary" aria-label="add" className={classes.button}
-                onClick={() => this.increment('contact')}>
-              <AddIcon />
-            </Button>
-            <Button variant="fab" mini color="secondary" aria-label="add" className={classes.button}
-                onClick={() => this.decrement('contact')}>
-              <SubtractIcon />
-            </Button>
-
-            <Divider />
-            <DialogContentText>
-                <Typography variant="display1">
-                  {this.props.meetings}
-                </Typography>
-            </DialogContentText>
-            <Button variant="fab" mini color="primary" aria-label="add" className={classes.button}
-                onClick={() => this.increment('meeting')}>
-              <AddIcon />
-            </Button>
-            <Button variant="fab" mini color="secondary" aria-label="add" className={classes.button}
-                onClick={() => this.decrement('meeting')}>
-              <SubtractIcon />
-            </Button>
-
-
 
           </DialogContent>
           <DialogActions>
@@ -271,8 +290,9 @@ function mapStateToProps(state){
     email: state.email,
     resources: state.resources,
     contacts: state.contacts,
-    meetings: state.meetings
+    meetings: state.meetings,
+    openSettings: state.openSettings
   })
 }
 
-export default withStyles(styles)(withRouter((connect(mapStateToProps, { resetUserID,updateEmail, increment, decrement, settingsDoneEditing })(MenuAppBar))));
+export default withStyles(styles)(withRouter((connect(mapStateToProps, { resetUserID,updateEmail, increment, decrement, settingsDoneEditing, updateUserSettings })(MenuAppBar))));

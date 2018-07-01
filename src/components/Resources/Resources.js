@@ -14,6 +14,7 @@ import Collapse from '@material-ui/core/Collapse';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import IconButton from '@material-ui/core/IconButton';
+import LinearProgress from '@material-ui/core/LinearProgress';
 
 import { Link } from 'react-router-dom';
 
@@ -22,6 +23,7 @@ const styles = theme => ({
     width: '50%',
     maxWidth: '50%',
     marginLeft: '25%',
+    marginTop: '32px',
 
     backgroundColor: theme.palette.background.paper,
   },
@@ -58,6 +60,9 @@ class Resources extends Component {
 
     return (
       <div className={classes.root}>
+
+        { (this.props.resourceList.length===0) ? <LinearProgress /> : null }
+        
         <List
           component="nav"
           subheader={<ListSubheader component="div">Resources</ListSubheader>} >

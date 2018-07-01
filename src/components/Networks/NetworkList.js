@@ -29,7 +29,10 @@ const styles = theme => ({
         margin: theme.spacing.unit,
     },
     root: {
-      flexGrow: 1,
+        width: '50%',
+        maxWidth: '50%',
+        marginLeft: '25%',       
+        backgroundColor: theme.palette.background.paper,
     },
     flex: {
       flex: 1,
@@ -198,16 +201,16 @@ class NetworkList extends Component {
                 <Typography variant="title" color="inherit" className={classes.flex}>
                     Network Connections
                 </Typography>
-                {this.state.networks.map( (network, i) => (
-                    <List component="nav" key={i}>
-                        <ListItem button onClick={ () => this.handleClickOpen(i)}>
-                            <ListItemText primary={network.name} />
-                        </ListItem>
-                    </List>
-                ))
-
-
-                } 
+                <div className={classes.root}>
+                    {this.state.networks.map( (network, i) => (
+                        <List component="nav" key={i}>
+                            <ListItem button onClick={ () => this.handleClickOpen(i)}>
+                                <ListItemText primary={network.name} />
+                            </ListItem>
+                        </List>
+                    ))
+                    } 
+                </div>
 
                 <Button component={Link} to="/dashboard" variant="contained" color="secondary" className={classes.button}>
                         Done

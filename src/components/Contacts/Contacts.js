@@ -77,7 +77,7 @@ class Contacts extends Component {
                     </IconButton>
 
 
-                    { 
+                    {   this.props.creatingNewResource ? null : (
                         this.props.resource.map( (contact, i) => ( 
                         
                                 <div key={i}>
@@ -90,10 +90,7 @@ class Contacts extends Component {
                                         <ListItemText inset primary={contact.contacttitle} />
                                     </ListItem>
                                 </div>
-                            
-
-                        
-                    ))}
+                      )))}
                 </List>
             </div> 
         )
@@ -107,6 +104,7 @@ Contacts.propTypes = {
 function mapStateToProps(state){
     return{
         userid: state.userid,
+        creatingNewResource: state.creatingNewResource,
         creatingNewContact: state.creatingNewContact,
         currentResourceID: state.currentResourceID,
         currentResourceTitle: state.currentResourceTitle,
