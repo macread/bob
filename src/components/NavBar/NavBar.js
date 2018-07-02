@@ -180,7 +180,7 @@ class MenuAppBar extends React.Component {
                   </Button>
                 </Grid>
                 <Grid ited xs={12}>
-                  <Button color="primary" className={classes.button}>
+                  <Button href={process.env.REACT_APP_LOGIN} color="primary" className={classes.button}>
                     New User
                   </Button>
                 </Grid>
