@@ -117,6 +117,7 @@ class ContactDetail extends Component {
                 url: '',
                 description: ''
             })
+            this.getAllNetworks();
         }else{
             this.getContact(this.props.currentContactID)
         }
@@ -178,9 +179,13 @@ class ContactDetail extends Component {
             })
         }).then(axios.get(`/api/networks/${contactid}`).then( results => {
                 (results.data.length>0 ? this.setState({networks: results.data}) : this.setState({networks: this.state.networks})) }))
-            .then(axios.get('/api/networks/').then( results => {
-                this.setState({allNetworks: results.data})}))
+            .then(this.getAllNetworks())
 
+    }
+
+    getAllNetworks(){
+        axios.get('/api/networks/').then( results => {
+            this.setState({allNetworks: results.data})})
     }
 
     updateContact(){
@@ -210,9 +215,9 @@ class ContactDetail extends Component {
     addNetwork(val){
         axios.post('/api/networkconnection',{
             networkid: val,
-            contactid: this.state.contactid
+            contactid: this.props.currentContactID
         })
-        .then(this.getContact(this.state.contactid))
+        .then(this.getContact(this.props.currentContactID))
         .then(this.setState({idx: 0}))
     }
 
