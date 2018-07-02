@@ -167,19 +167,22 @@ class ContactDetail extends Component {
     }
 
     getContact(contactid) {
-        axios.get(`/api/contact/${contactid}`).then( results => {
-            let { id, date, type, title, description, inperson } = results.data[0]
-            this.setState({
-                contactid: id,
-                date: date.substring(0,10),
-                type: type,
-                title: title,
-                description: description,
-                inperson: inperson
-            })
-        }).then(axios.get(`/api/networks/${contactid}`).then( results => {
-                (results.data.length>0 ? this.setState({networks: results.data}) : this.setState({networks: this.state.networks})) }))
-            .then(this.getAllNetworks())
+        if (contactid>0) {
+            axios.get(`/api/contact/${contactid}`).then( results => {
+                let { id, date, type, title, description, inperson } = results.data[0]
+                this.setState({
+                    contactid: id,
+                    date: date.substring(0,10),
+                    type: type,
+                    title: title,
+                    description: description,
+                    inperson: inperson
+                })
+            }).then(axios.get(`/api/networks/${contactid}`).then( results => {
+                    (results.data.length>0 ? this.setState({networks: results.data}) : this.setState({networks: this.state.networks})) }))
+                .then(this.getAllNetworks())
+
+        }
 
     }
 
@@ -213,12 +216,21 @@ class ContactDetail extends Component {
     }
 
     addNetwork(val){
-        axios.post('/api/networkconnection',{
-            networkid: val,
+        let { id, name, email } = this.state.allNetworks[val];
+            axios.post('/api/networkconnection',{
+            networkid: id,
             contactid: this.props.currentContactID
         })
         .then(this.getContact(this.props.currentContactID))
-        .then(this.setState({idx: 0}))
+
+        let newNetworks = this.state.networks;
+        newNetworks.push({
+            id: id,
+            contactid: this.props.currentContactID,
+            name: name,
+            email: email
+        })
+        this.setState({networks: newNetworks})
     }
 
 
@@ -333,7 +345,7 @@ class ContactDetail extends Component {
                             >
                                 <option value='0' key='9999'></option>
                                 {this.state.allNetworks.map( (network, i) => (
-                                    <option value={network.id} key={i}>{network.name}</option>
+                                    <option value={i} key={i}>{network.name}</option>
                                 ))}
                             </NativeSelect>
                             <FormHelperText>Select a network connection for this contact</FormHelperText>
@@ -344,7 +356,7 @@ class ContactDetail extends Component {
                     <div className={classes.root}>
                         <List component="nav">
                             {this.state.networks.map( (network, i) => (
-                                    
+                                    network.name !== '' ? (
                                     <ListItem button key={i}>
                                     <ListItemText primary={network.name} />
                                     <IconButton color="primary" className={classes.button} >
@@ -354,6 +366,9 @@ class ContactDetail extends Component {
                                         <DeleteIcon className={classes.icon} color="secondary" onClick={ () => this.deleteNetworkConnection(i) } />
                                     </IconButton>
                                     </ListItem>
+                                    )
+                                    :
+                                    null
                                 ))
                             }
                         </List>
