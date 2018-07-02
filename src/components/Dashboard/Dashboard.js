@@ -148,7 +148,7 @@ class Dashboard extends Component {
                         </FormControl>
                     </Grid>
                     
-                    <Grid xs={8} sm={4}>
+                    <Grid item xs={8} sm={4}>
                         <Progress 
                             header='Resources'
                             progress={this.props.resourceCount}
@@ -156,7 +156,7 @@ class Dashboard extends Component {
                         />
                     </Grid>
 
-                    <Grid xs={8} sm={4}>
+                    <Grid item xs={8} sm={4}>
                         <Progress 
                             header='Contacts'
                             progress={this.props.contactCount}
@@ -164,7 +164,7 @@ class Dashboard extends Component {
                         />
                     </Grid>
 
-                    <Grid xs={8} sm={4}>
+                    <Grid item xs={8} sm={4}>
                         <Progress 
                             header='Meetings'
                             progress={this.props.meetingCount}
