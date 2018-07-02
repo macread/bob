@@ -10,7 +10,7 @@ import ListSubheader from '@material-ui/core/ListSubheader';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
-import EditIcon from '@material-ui/icons/Edit';
+// import EditIcon from '@material-ui/icons/Edit';
 import AddIcon from '@material-ui/icons/AddCircleOutline';
 import IconButton from '@material-ui/core/IconButton';
 
@@ -81,11 +81,12 @@ class Contacts extends Component {
                         this.props.resource.map( (contact, i) => ( 
                         
                                 <div key={i}>
-                                    <ListItem button >
-                                        <IconButton component={Link} to='/contactdetail' color="primary" className={classes.button} 
+                                    <ListItem button component={Link} to='/contactdetail' className={classes.button} 
+                                                onClick={ () => this.handleEditContactClick(contact.contactid,contact.contacttitle) } >
+                                        {/* <IconButton component={Link} to='/contactdetail' color="primary" className={classes.button} 
                                                 onClick={ () => this.handleEditContactClick(contact.contactid,contact.contacttitle) }>
                                             <EditIcon />
-                                        </IconButton>
+                                        </IconButton> */}
                             
                                         <ListItemText inset primary={contact.contacttitle} />
                                     </ListItem>

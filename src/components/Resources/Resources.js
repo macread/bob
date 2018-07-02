@@ -8,11 +8,11 @@ import ListSubheader from '@material-ui/core/ListSubheader';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
-import EditIcon from '@material-ui/icons/Edit';
+// import EditIcon from '@material-ui/icons/Edit';
 import AddIcon from '@material-ui/icons/AddCircleOutline';
-import Collapse from '@material-ui/core/Collapse';
-import ExpandLess from '@material-ui/icons/ExpandLess';
-import ExpandMore from '@material-ui/icons/ExpandMore';
+// import Collapse from '@material-ui/core/Collapse';
+// import ExpandLess from '@material-ui/icons/ExpandLess';
+// import ExpandMore from '@material-ui/icons/ExpandMore';
 import IconButton from '@material-ui/core/IconButton';
 import LinearProgress from '@material-ui/core/LinearProgress';
 
@@ -75,7 +75,7 @@ class Resources extends Component {
             this.props.resourceList.map( (resource, i) => ( 
                 (resource.main === 'yes') ? (
                     <div key={i}>
-                        <ListItem button onClick={ () => this.handleClick(resource.id) }>
+                        {/* <ListItem button onClick={ () => this.handleClick(resource.id) }>
                                 <IconButton component={Link} to="/resourcedetail" color="primary" className={classes.button} 
                                         onClick={ () => this.handleEditClick(resource.id) }
                                         resourceid = {resource.Id}>
@@ -83,27 +83,33 @@ class Resources extends Component {
                                 </IconButton>
                             <ListItemText inset primary={resource.resourcetitle} />
                             {resource.collapse ? <ExpandLess /> : <ExpandMore/>}
+                        </ListItem> */}
+
+                        <ListItem button component={Link} to="/resourcedetail" onClick={ () => this.handleEditClick(resource.id) }
+                                        resourceid = {resource.Id}>
+                            <ListItemText inset primary={resource.resourcetitle} />
+                            {/* {resource.collapse ? <ExpandLess /> : <ExpandMore/>} */}
                         </ListItem>
 
-                        <Collapse in={resource.collapse} timeout="auto" unmountOnExit>
+                        {/* <Collapse in={resource.collapse} timeout="auto" unmountOnExit>
                             <List component="div" disablePadding>
                                 <ListItem button className={classes.nested}>
                                     <ListItemText inset primary={resource.contacttitle} />
                                 </ListItem>
                             </List>
-                        </Collapse>
+                        </Collapse> */}
                     </div>
                     )
                 :   
                     ( 
                     <div key={i}>
-                        <Collapse in={resource.collapse} timeout="auto" unmountOnExit>
+                        {/* <Collapse in={resource.collapse} timeout="auto" unmountOnExit>
                             <List component="div" disablePadding>
                                 <ListItem button className={classes.nested}>
                                     <ListItemText inset primary={resource.contacttitle} />
                                 </ListItem>
                             </List>
-                        </Collapse>
+                        </Collapse> */}
                     </div>
                     )
 

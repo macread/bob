@@ -358,11 +358,11 @@ class ContactDetail extends Component {
                     <Grid item xs={12}>
                             { 
                                 this.props.creatingNewContact ?
-                                        (<Button variant="contained" color="primary" component={Link} to='/resourcedetail' className={classes.button}
+                                        (<Button variant="contained" color="primary" component={Link} to='/resourcedetail' resourceid = {this.props.currentResourceID} className={classes.button}
                                                 onClick={()=>this.addContact()}>
                                             Save
                                         </Button>
-                                ) : (<Button variant="contained" color="primary" component={Link} to='/resourcedetail' className={classes.button}
+                                ) : (<Button variant="contained" color="primary" component={Link} to='/resourcedetail' resourceid = {this.props.currentResourceID} className={classes.button}
                                             onClick={()=>this.updateContact()}>
                                             Update
                                         </Button>
@@ -370,12 +370,12 @@ class ContactDetail extends Component {
                             }
 
                                 
-                            <Button variant="contained" className={classes.button} component={Link} to='/resourcedetail' 
+                            <Button variant="contained" className={classes.button} component={Link} to='/resourcedetail' resourceid = {this.props.currentResourceID}
                                     onClick={()=>this.cancelContact()}>
                                 Cancel
                             </Button>
                             
-                            <Button variant="contained" color="secondary" className={classes.button} component={Link} to='/resourcedetail' 
+                            <Button variant="contained" color="secondary" className={classes.button} component={Link} to='/resourcedetail' resourceid = {this.props.currentResourceID}
                                     onClick={()=>this.deleteContact()}>
                                 Delete
                             </Button>
