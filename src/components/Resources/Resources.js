@@ -75,7 +75,7 @@ class Resources extends Component {
             this.props.resourceList.map( (resource, i) => ( 
                 (resource.main === 'yes') ? (
                     <div key={i}>
-                        <ListItem button  onClick={ () => this.handleClick(resource.id) }>
+                        <ListItem button onClick={ () => this.handleClick(resource.id) }>
                                 <IconButton component={Link} to="/resourcedetail" color="primary" className={classes.button} 
                                         onClick={ () => this.handleEditClick(resource.id) }
                                         resourceid = {resource.Id}>
